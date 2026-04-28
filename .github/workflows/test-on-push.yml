@@ -27,9 +27,6 @@ jobs:
       checks: write
     steps:
         - uses: actions/checkout@v4
-          with:
-            ref: ${{ github.event.pull_request.head.sha }}
-            fetch-depth: 0
         - name: 'Qodana Scan'
           uses: JetBrains/qodana-action@v2025.3
           with:
