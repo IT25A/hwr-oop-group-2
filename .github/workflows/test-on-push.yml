@@ -1,10 +1,12 @@
 name: Test Code on Push and PR
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
-  test:
+  mvn-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -15,3 +17,28 @@ jobs:
 
       - name: Test with Maven verify phase
         run: mvn verify
+
+  qodana:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request }}
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
+    steps:
+        - uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}
+            fetch-depth: 0
+        - name: 'Qodana Scan'
+          uses: JetBrains/qodana-action@v2025.3
+          with:
+            # When pr-mode is set to true, Qodana analyzes only the files that have been changed
+            pr-mode: true
+            use-caches: true
+            post-pr-comment: true
+            use-annotations: true
+            # Upload Qodana results (SARIF, other artifacts, logs) as an artifact to the job
+            upload-result: false
+            # quick-fixes available in Ultimate and Ultimate Plus plans
+            push-fixes: 'none'
