@@ -7,6 +7,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.Arguments
 
 class TilesTest {
 	
@@ -49,46 +51,24 @@ class TilesTest {
 		val values = entries.map { it.value() }
 		assertThat(values).containsExactlyElementsOf(numList)
 	}
-	
-	@ParameterizedTest
-	@EnumSource(TileValue::class)
-	fun `blue tiles accept all values`(value: TileValue) {
-		val tile = Tile(value, TileColor.Blue)
-		assertThat(tile.value()).isEqualTo(value)
-	}
-	
-	@ParameterizedTest
-	@EnumSource(TileValue::class)
-	fun `red tiles accept all values`(value: TileValue) {
-		val tile = Tile(value, TileColor.Red)
-		assertThat(tile.value()).isEqualTo(value)
-	}
-	
-	@ParameterizedTest
-	@EnumSource(TileValue::class)
-	fun `black tiles accept all values`(value: TileValue) {
-		val tile = Tile(value, TileColor.Black)
-		assertThat(tile.value()).isEqualTo(value)
-	}
 
 	// Dies testet alle
-	@Test
-	fun `all possible valid tile combinations are unique`() {
-		val colors = TileColor.entries
-		val values = TileValue.entries
-		val allCombinations = colors.flatMap { color ->
-			values.map { value -> Tile(value, color) }
-		}
-		val expectedCombinations = colors.flatMap { color ->
-			values.map { value -> Pair(value, color) }
-		}
-		assertThat(allCombinations).doesNotHaveDuplicates()
-
-		assertThat(allCombinations).hasSize(expectedCombinations.size)
-
-		assertThat(allCombinations.map { Pair(it.value(), it.color()) })
-			.containsExactlyInAnyOrderElementsOf(expectedCombinations)
+	companion object {
+		@JvmStatic
+		fun allCombinations(): List<Array<Any>> =
+			TileColor.entries.flatMap { color ->
+				TileValue.entries.map { value -> arrayOf(value, color) }
+			}
 	}
+
+	@ParameterizedTest
+	@MethodSource("allCombinations")
+	fun `all possible valid tile combinations are tiles`(value: TileValue, color: TileColor) {
+		val tile = Tile(value, color)
+		assertThat(tile.value()).isEqualTo(value)
+		assertThat(tile.color()).isEqualTo(color)
+	}
+
 	@Test
 	fun `same tiles have same hashCode and are equal`() {
 		val tile1 = Tile(TileValue.One, TileColor.Blue)
@@ -100,13 +80,6 @@ class TilesTest {
 		assertThat(tile1.hashCode()).isEqualTo(tile2.hashCode())
 
 		assertThat(tile1).isNotEqualTo(tile3)
-	}
-
-	@ParameterizedTest
-	@EnumSource(TileValue::class)
-	fun `orange tiles accept all values`(value: TileValue) {
-		val tile = Tile(value, TileColor.Orange);
-		assertThat(tile.value()).isEqualTo(value);
 	}
 	
 }
