@@ -1,9 +1,12 @@
 package hwr.oop.grp02.rummikub_2026.core
 
+import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 
 class TilesTest {
 	
@@ -46,6 +49,35 @@ class TilesTest {
 		val values = entries.map { it.value() }
 		assertThat(values).containsExactlyElementsOf(numList);
 	}
+	
+	@ParameterizedTest
+	@EnumSource(TileValue::class)
+	fun `blue tiles accept all values`(value: TileValue) {
+		val tile = Tile(value, TileColor.Blue);
+		assertThat(tile.value()).isEqualTo(value);
+	}
+	
+	@ParameterizedTest
+	@EnumSource(TileValue::class)
+	fun `red tiles accept all values`(value: TileValue) {
+		val tile = Tile(value, TileColor.Red);
+		assertThat(tile.value()).isEqualTo(value);
+	}
+	
+	@ParameterizedTest
+	@EnumSource(TileValue::class)
+	fun `black tiles accept all values`(value: TileValue) {
+		val tile = Tile(value, TileColor.Black);
+		assertThat(tile.value()).isEqualTo(value);
+	}
+	
+	@ParameterizedTest
+	@EnumSource(TileValue::class)
+	fun `orange tiles accept all values`(value: TileValue) {
+		val tile = Tile(value, TileColor.Orange);
+		assertThat(tile.value()).isEqualTo(value);
+	}
+	
 }
 
 
