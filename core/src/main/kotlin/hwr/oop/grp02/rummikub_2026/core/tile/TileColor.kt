@@ -1,4 +1,4 @@
-package hwr.oop.grp02.rummikub_2026.core
+package hwr.oop.grp02.rummikub_2026.core.tile
 
 enum class TileColor {
 	Red,

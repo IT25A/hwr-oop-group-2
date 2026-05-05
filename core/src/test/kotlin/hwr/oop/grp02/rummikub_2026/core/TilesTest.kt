@@ -1,5 +1,7 @@
 package hwr.oop.grp02.rummikub_2026.core
 
+import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
+import hwr.oop.grp02.rummikub_2026.core.tile.TileValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
