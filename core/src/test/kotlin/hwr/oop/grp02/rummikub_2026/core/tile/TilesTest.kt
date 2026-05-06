@@ -1,8 +1,5 @@
-package hwr.oop.grp02.rummikub_2026.core
+package hwr.oop.grp02.rummikub_2026.core.tile
 
-import hwr.oop.grp02.rummikub_2026.core.tile.Tile
-import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
-import hwr.oop.grp02.rummikub_2026.core.tile.TileValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -20,11 +17,11 @@ class TilesTest {
 			TileColor.Orange
 		)
 	}
-
+	
 	@Test
 	fun `value has all 13 possible values`() {
 		val entries = TileValue.entries
-
+		
 		assertThat(entries).containsExactlyInAnyOrder(
 			TileValue.One,
 			TileValue.Two,
@@ -49,7 +46,7 @@ class TilesTest {
 		val values = entries.map { it.value() }
 		assertThat(values).containsExactlyElementsOf(numList)
 	}
-
+	
 	companion object {
 		@JvmStatic
 		fun allCombinations(): List<Array<Any>> =
@@ -57,7 +54,7 @@ class TilesTest {
 				TileValue.entries.map { value -> arrayOf(value, color) }
 			}
 	}
-
+	
 	@ParameterizedTest
 	@MethodSource("allCombinations")
 	fun `all possible valid tile combinations are tiles`(value: TileValue, color: TileColor) {
@@ -65,20 +62,18 @@ class TilesTest {
 		assertThat(tile.value()).isEqualTo(value)
 		assertThat(tile.color()).isEqualTo(color)
 	}
-
+	
 	@Test
 	fun `same tiles have same hashCode and are equal`() {
 		val tile1 = Tile(TileValue.One, TileColor.Blue)
 		val tile2 = Tile(TileValue.One, TileColor.Blue)
 		val tile3 = Tile(TileValue.Two, TileColor.Blue)
-
+		
 		assertThat(tile1).isEqualTo(tile2)
-
+		
 		assertThat(tile1.hashCode()).isEqualTo(tile2.hashCode())
-
+		
 		assertThat(tile1).isNotEqualTo(tile3)
 	}
 	
 }
-
-
