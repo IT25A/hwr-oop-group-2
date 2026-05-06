@@ -6,9 +6,7 @@ import hwr.oop.grp02.rummikub_2026.core.tile.TileValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
-import org.junit.jupiter.params.provider.Arguments
 
 class TilesTest {
 	
@@ -52,7 +50,6 @@ class TilesTest {
 		assertThat(values).containsExactlyElementsOf(numList)
 	}
 
-	// Dies testet alle
 	companion object {
 		@JvmStatic
 		fun allCombinations(): List<Array<Any>> =
