@@ -1,6 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core.tile
 
-enum class TileValue(private val value: Int) {
+enum class TileNumber(private val value: Int) {
 	One(1),
 	Two(2),
 	Three(3),

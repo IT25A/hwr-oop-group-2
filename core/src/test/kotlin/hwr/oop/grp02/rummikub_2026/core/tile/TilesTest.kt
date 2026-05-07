@@ -19,29 +19,29 @@ class TilesTest {
 	}
 	
 	@Test
-	fun `value has all 13 possible values`() {
-		val entries = TileValue.entries
+	fun `number has all 13 possible values`() {
+		val entries = TileNumber.entries
 		
 		assertThat(entries).containsExactlyInAnyOrder(
-			TileValue.One,
-			TileValue.Two,
-			TileValue.Three,
-			TileValue.Four,
-			TileValue.Five,
-			TileValue.Six,
-			TileValue.Seven,
-			TileValue.Eight,
-			TileValue.Nine,
-			TileValue.Ten,
-			TileValue.Eleven,
-			TileValue.Twelve,
-			TileValue.Thirteen,
+			TileNumber.One,
+			TileNumber.Two,
+			TileNumber.Three,
+			TileNumber.Four,
+			TileNumber.Five,
+			TileNumber.Six,
+			TileNumber.Seven,
+			TileNumber.Eight,
+			TileNumber.Nine,
+			TileNumber.Ten,
+			TileNumber.Eleven,
+			TileNumber.Twelve,
+			TileNumber.Thirteen,
 		)
 	}
 	
 	@Test
-	fun `correct int mapping of TileValue`() {
-		val entries = TileValue.entries
+	fun `correct int mapping of TileNumber`() {
+		val entries = TileNumber.entries
 		val numList = (1..13).toList()
 		val values = entries.map { it.value() }
 		assertThat(values).containsExactlyElementsOf(numList)
@@ -51,23 +51,23 @@ class TilesTest {
 		@JvmStatic
 		fun allCombinations(): List<Array<Any>> =
 			TileColor.entries.flatMap { color ->
-				TileValue.entries.map { value -> arrayOf(value, color) }
+				TileNumber.entries.map { value -> arrayOf(value, color) }
 			}
 	}
 	
 	@ParameterizedTest
 	@MethodSource("allCombinations")
-	fun `all possible valid tile combinations are tiles`(value: TileValue, color: TileColor) {
+	fun `all possible valid tile combinations are tiles`(value: TileNumber, color: TileColor) {
 		val tile = Tile(value, color)
-		assertThat(tile.value()).isEqualTo(value)
+		assertThat(tile.number()).isEqualTo(value)
 		assertThat(tile.color()).isEqualTo(color)
 	}
 	
 	@Test
 	fun `same tiles have same hashCode and are equal`() {
-		val tile1 = Tile(TileValue.One, TileColor.Blue)
-		val tile2 = Tile(TileValue.One, TileColor.Blue)
-		val tile3 = Tile(TileValue.Two, TileColor.Blue)
+		val tile1 = Tile(TileNumber.One, TileColor.Blue)
+		val tile2 = Tile(TileNumber.One, TileColor.Blue)
+		val tile3 = Tile(TileNumber.Two, TileColor.Blue)
 		
 		assertThat(tile1).isEqualTo(tile2)
 		

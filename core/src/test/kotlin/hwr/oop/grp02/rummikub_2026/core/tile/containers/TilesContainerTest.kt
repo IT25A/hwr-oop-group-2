@@ -2,7 +2,7 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
-import hwr.oop.grp02.rummikub_2026.core.tile.TileValue
+import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
 import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -11,9 +11,9 @@ class TestContainer : TilesContainer()
 
 class TilesContainerTest {
 	lateinit var container: TestContainer
-	val tile1 = Tile(TileValue.One, TileColor.Blue)
-	val tile2 = Tile(TileValue.Two, TileColor.Red)
-	val tile3 = Tile(TileValue.Three, TileColor.Orange)
+	val tile1 = Tile(TileNumber.One, TileColor.Blue)
+	val tile2 = Tile(TileNumber.Two, TileColor.Red)
+	val tile3 = Tile(TileNumber.Three, TileColor.Orange)
 	
 	@BeforeEach
 	fun setup() {
