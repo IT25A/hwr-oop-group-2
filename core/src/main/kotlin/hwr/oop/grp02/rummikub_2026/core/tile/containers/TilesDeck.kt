@@ -1,5 +1,13 @@
 package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
-import hwr.oop.grp02.rummikub_2026.core.tile.Tile
+class TilesDeck() : TilesContainer() {
 
-class TilesDeck() : TilesContainer() { }
+    fun sortByNumber() {
+        tiles.sortBy { it.value() }
+    }
+
+    fun sortByColor() {
+        tiles.sortBy { it.color() }
+    }
+
+}
