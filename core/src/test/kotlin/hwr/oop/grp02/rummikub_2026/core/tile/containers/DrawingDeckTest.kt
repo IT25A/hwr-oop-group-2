@@ -18,7 +18,7 @@ class DrawingDeckTest {
 	@Test
 	fun `sorted list gets randomized`() {
 		val input = listOf(tile1, tile2, tile3, tile4)
-		val container = TilesContainer(input)
+		val container = TilesContainer.byList(input)
 		
 		val deck = DrawingDeck(container)
 		
@@ -38,7 +38,7 @@ class DrawingDeckTest {
 	
 	@Test
 	fun `drawing a tile from DrawingDeck`() {
-		val container = TilesContainer(listOf(tile1, tile2, tile3, tile4))
+		val container = TilesContainer.byList(listOf(tile1, tile2, tile3, tile4))
 		val deck = DrawingDeck(container)
 		
 		val drawnTile = deck.draw()

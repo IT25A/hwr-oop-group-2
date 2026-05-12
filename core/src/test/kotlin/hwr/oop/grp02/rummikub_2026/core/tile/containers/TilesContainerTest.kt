@@ -39,7 +39,7 @@ class TilesContainerTest {
 	
 	@Test
 	fun `container#remove removes a tile from the list`() {
-		val container = TilesContainer(listOf(tile1))
+		val container = TilesContainer.byList(listOf(tile1))
 		
 		container.remove(tile1)
 		
@@ -48,7 +48,7 @@ class TilesContainerTest {
 	
 	@Test
 	fun `order of tiles is preserved`() {
-		val container = TilesContainer(listOf(tile1, tile2, tile3))
+		val container = TilesContainer.byList(listOf(tile1, tile2, tile3))
 		
 		val contentOfContainer = container.tiles()
 		
@@ -57,7 +57,7 @@ class TilesContainerTest {
 	
 	@Test
 	fun `container#size has correct size`() {
-		val container = TilesContainer(listOf(tile1, tile2, tile3))
+		val container = TilesContainer.byList(listOf(tile1, tile2, tile3))
 		
 		assertThat(container.size()).isEqualTo(3)
 	}

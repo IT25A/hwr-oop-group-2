@@ -5,8 +5,12 @@ import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 class TilesContainer {
 	private val tiles: MutableList<Tile> = mutableListOf();
 	
-	constructor(initTiles: List<Tile> = listOf()) {
-		tiles.addAll(initTiles)
+	companion object {
+		fun byList(list: List<Tile>): TilesContainer {
+			val container = TilesContainer()
+			container.add(list)
+			return container;
+		}
 	}
 	
 	fun add(tile: Tile) {

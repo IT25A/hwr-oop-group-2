@@ -16,7 +16,7 @@ class PlayerDeckTest {
     
     @Test
     fun `PlayerDeck sorts color`() {
-        val container = TilesContainer(listOf(tile1, tile2, tile3, tile4))
+        val container = TilesContainer.byList(listOf(tile1, tile2, tile3, tile4))
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
         
         deck.sort()
@@ -26,7 +26,7 @@ class PlayerDeckTest {
 
     @Test
     fun `PlayerDeck sorts by number`() {
-        val container = TilesContainer(listOf(tile4, tile3, tile2, tile1))
+        val container = TilesContainer.byList(listOf(tile4, tile3, tile2, tile1))
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
         
         deck.sort()
@@ -46,7 +46,7 @@ class PlayerDeckTest {
     @Test
     fun `by-number sorting a sorted list returns the input list`() {
         val input = listOf(tile1, tile3, tile2, tile4)
-        val container = TilesContainer(input)
+        val container = TilesContainer.byList(input)
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
         
         deck.sort()
@@ -57,7 +57,7 @@ class PlayerDeckTest {
     @Test
     fun `by-color sorting a sorted list returns the input list`() {
         val input = listOf(tile1, tile3, tile2, tile4)
-        val container = TilesContainer(input)
+        val container = TilesContainer.byList(input)
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
         
         deck.sort()
