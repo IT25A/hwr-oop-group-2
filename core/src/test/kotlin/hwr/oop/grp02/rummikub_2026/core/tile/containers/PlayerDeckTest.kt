@@ -4,7 +4,6 @@ import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class PlayerDeckTest {
@@ -17,7 +16,7 @@ class PlayerDeckTest {
     @Test
     fun `PlayerDeck sorts color`() {
         val container = TilesContainer.byList(listOf(tile1, tile2, tile3, tile4))
-        val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
+        val deck = PlayerDeck(container, PlayerDeckSortingMode.ByColor)
         
         deck.sort()
         
@@ -27,7 +26,7 @@ class PlayerDeckTest {
     @Test
     fun `PlayerDeck sorts by number`() {
         val container = TilesContainer.byList(listOf(tile4, tile3, tile2, tile1))
-        val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
+        val deck = PlayerDeck(container, PlayerDeckSortingMode.ByNumber)
         
         deck.sort()
         
@@ -47,7 +46,7 @@ class PlayerDeckTest {
     fun `by-number sorting a sorted list returns the input list`() {
         val input = listOf(tile1, tile3, tile2, tile4)
         val container = TilesContainer.byList(input)
-        val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
+        val deck = PlayerDeck(container, PlayerDeckSortingMode.ByNumber)
         
         deck.sort()
         
@@ -58,7 +57,7 @@ class PlayerDeckTest {
     fun `by-color sorting a sorted list returns the input list`() {
         val input = listOf(tile1, tile3, tile2, tile4)
         val container = TilesContainer.byList(input)
-        val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
+        val deck = PlayerDeck(container, PlayerDeckSortingMode.ByColor)
         
         deck.sort()
         
