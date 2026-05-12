@@ -16,32 +16,30 @@ class PlayerDeckTest {
     
     @Test
     fun `PlayerDeck sorts color`() {
-        val input = listOf(tile1, tile2, tile3, tile4)
-        val container = TilesContainer()
-        container.add(input)
-        
+        val container = TilesContainer(listOf(tile1, tile2, tile3, tile4))
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
         
         deck.sort()
+        
         assertThat(deck.tiles()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
     }
 
     @Test
     fun `PlayerDeck sorts by number`() {
-        val input = listOf(tile4, tile3, tile2, tile1)
-        val container = TilesContainer()
-        container.add(input)
-        
+        val container = TilesContainer(listOf(tile4, tile3, tile2, tile1))
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
         
         deck.sort()
+        
         assertThat(deck.tiles()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
     }
     
     @Test
     fun `empty list remains empty on sort`() {
         val deck = PlayerDeck()
+        
         deck.sort()
+        
         assertThat(deck.tiles()).isEmpty()
     }
     
@@ -50,7 +48,9 @@ class PlayerDeckTest {
         val input = listOf(tile1, tile3, tile2, tile4)
         val container = TilesContainer(input)
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
+        
         deck.sort()
+        
         assertThat(deck.tiles()).containsExactlyElementsOf(input)
     }
     
@@ -59,7 +59,9 @@ class PlayerDeckTest {
         val input = listOf(tile1, tile3, tile2, tile4)
         val container = TilesContainer(input)
         val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
+        
         deck.sort()
+        
         assertThat(deck.tiles()).containsExactlyElementsOf(input)
     }
 
