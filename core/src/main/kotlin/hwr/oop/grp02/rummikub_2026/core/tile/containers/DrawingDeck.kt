@@ -2,11 +2,11 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
 class DrawingDeck(private val container: TilesContainer = TilesContainer()) {
 	
-	companion object {
+	/*companion object {
 		fun fullDeck() {
 			TODO("Implement init with all possible tiles")
 		}
-	}
+	}*/
 	
 	fun randomize() = container.randomize()
 	
