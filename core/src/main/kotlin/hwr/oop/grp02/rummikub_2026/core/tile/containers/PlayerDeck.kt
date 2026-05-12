@@ -1,13 +1,40 @@
 package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
-class PlayerDeck : TilesContainer() {
+import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
-    fun sortByNumber() {
-        tiles.sortBy { it.number().value() }
-    }
+enum class PlayerDockSortingMode {
+	ByColor,
+	ByNumber
+}
 
-    fun sortByColor() {
-        tiles.sortBy { it.color().name }
-    }
-
+class PlayerDeck(
+	private val container: TilesContainer = TilesContainer(),
+	private var mode: PlayerDockSortingMode = PlayerDockSortingMode.ByNumber,
+) {
+	fun tiles() = container.tiles()
+	
+	fun give(tile: Tile) {
+		container.add(tile);
+		sort()
+	}
+	
+	fun give(tiles: List<Tile>) {
+		container.add(tiles);
+	}
+	
+	fun play(tile: Tile) {
+		container.remove(tile)
+	}
+	
+	fun sort() {
+		if (mode === PlayerDockSortingMode.ByNumber) {
+			container.sortByNumber()
+		} else {
+			container.sortByColor()
+		}
+	}
+	
+	fun setMode(mode: PlayerDockSortingMode) {
+		this.mode = mode;
+	}
 }

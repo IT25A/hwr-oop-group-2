@@ -2,22 +2,21 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
-class DrawingDeck : TilesContainer() {
+class DrawingDeck(private val container: TilesContainer = TilesContainer()) {
 	
-	/**
-	 * Randomizes the drawing deck by shuffling all tiles
-	 */
-	fun randomize() {
-		tiles.shuffle();
+	fun init() {
+		TODO("Create all tiles")
 	}
+	
+	fun randomize() = container.randomize()
 	
 	/**
 	 * Draws one tile and returns it
 	 * @return the drawn tile
 	 * @exception NoSuchElementException if DrawingDeck is empty
 	 */
-	fun draw(): Tile {
-		return tiles.removeFirst();
-	}
+	fun draw() = container.removeFirst()
+	
+	fun tiles() = container.tiles()
 	
 }

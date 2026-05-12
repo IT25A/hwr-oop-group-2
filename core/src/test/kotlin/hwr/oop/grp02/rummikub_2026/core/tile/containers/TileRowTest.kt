@@ -21,11 +21,7 @@ class TileRowTest {
 	
 	@BeforeEach
 	fun setup() {
-		val blueRow = TileRow(TileRowType.DiffNumberSameColor)
-		blueRow.add(listOf(blueThree, blueOne, blueTwo))
-		val threeRow = TileRow(TileRowType.SameNumberDiffColor)
-		threeRow.add(listOf(blueThree, blackThree, redThree, orangeThree))
-		
+		TODO("Will be implemented soon")
 	}
 	
 	// TODO - QUESTION TO STEFAN

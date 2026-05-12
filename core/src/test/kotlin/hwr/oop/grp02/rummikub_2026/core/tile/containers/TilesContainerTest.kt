@@ -7,17 +7,15 @@ import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 
-class TestContainer : TilesContainer()
-
 class TilesContainerTest {
-	lateinit var container: TestContainer
+	lateinit var container: TilesContainer
 	val tile1 = Tile(TileNumber.One, TileColor.Blue)
 	val tile2 = Tile(TileNumber.Two, TileColor.Red)
 	val tile3 = Tile(TileNumber.Three, TileColor.Orange)
 	
 	@BeforeEach
 	fun setup() {
-		container = TestContainer()
+		container = TilesContainer()
 	}
 	
 	@Test

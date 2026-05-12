@@ -9,61 +9,57 @@ import org.junit.jupiter.api.Test
 
 class PlayerDeckTest {
 
-    lateinit var deck: PlayerDeck
     val tile1 = Tile(TileNumber.One, TileColor.Blue)
     val tile2 = Tile(TileNumber.Five, TileColor.Red)
     val tile3 = Tile(TileNumber.Four, TileColor.Orange)
     val tile4 = Tile(TileNumber.Six, TileColor.Red)
-
-    @BeforeEach
-    fun setup() {
-        deck = PlayerDeck()
-    }
-
-    @Test
-    fun `PlayerDeck inherits TilesContainer`() {
-        assertThat { deck is TilesContainer }
-    }
     
     @Test
     fun `PlayerDeck sorts color`() {
-        deck.add(listOf(tile1, tile2, tile3, tile4))
-        deck.sortByColor()
+        val input = listOf(tile1, tile2, tile3, tile4)
+        val container = TilesContainer()
+        container.add(input)
+        
+        val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
+        
+        deck.sort()
         assertThat(deck.tiles()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
     }
 
     @Test
     fun `PlayerDeck sorts by number`() {
-        deck.add(listOf(tile4, tile3, tile2, tile1))
-        deck.sortByNumber()
+        val input = listOf(tile4, tile3, tile2, tile1)
+        val container = TilesContainer()
+        container.add(input)
+        
+        val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
+        
+        deck.sort()
         assertThat(deck.tiles()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
     }
     
     @Test
-    fun `empty list remains empty (number)`() {
-        deck.sortByNumber()
+    fun `empty list remains empty on sort`() {
+        val deck = PlayerDeck()
+        deck.sort()
         assertThat(deck.tiles()).isEmpty()
-    }
-    
-    @Test
-    fun `empty list remains empty (color)`() {
-        deck.sortByColor()
-        assertThat(deck.tiles()).isEmpty();
     }
     
     @Test
     fun `by-number sorting a sorted list returns the input list`() {
         val input = listOf(tile1, tile3, tile2, tile4)
-        deck.add(input)
-        deck.sortByNumber()
+        val container = TilesContainer(input)
+        val deck = PlayerDeck(container, PlayerDockSortingMode.ByNumber)
+        deck.sort()
         assertThat(deck.tiles()).containsExactlyElementsOf(input)
     }
     
     @Test
     fun `by-color sorting a sorted list returns the input list`() {
         val input = listOf(tile1, tile3, tile2, tile4)
-        deck.add(listOf(tile1, tile3, tile2, tile4))
-        deck.sortByColor()
+        val container = TilesContainer(input)
+        val deck = PlayerDeck(container, PlayerDockSortingMode.ByColor)
+        deck.sort()
         assertThat(deck.tiles()).containsExactlyElementsOf(input)
     }
 
