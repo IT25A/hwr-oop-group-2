@@ -1,14 +1,26 @@
 package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
+import hwr.oop.grp02.rummikub_2026.core.tile.Tile
+
 enum class TileRowType {
 	DiffNumberSameColor,
 	SameNumberDiffColor
 }
 
-// TODO: Sort list on add tile(s)
-class TileRow(private val type: TileRowType) : TilesContainer() {
+class TileRow(private val type: TileRowType, private val container: TilesContainer = TilesContainer()) {
+	fun add(tile: Tile) {
+		container.add(tile)
+		if (type === TileRowType.DiffNumberSameColor) {
+			container.sortByNumber()
+		}
+	}
+	
+	fun remove(tile: Tile) {
+		container.remove(tile)
+	}
+	
 	fun validate(): Boolean {
-		val content = tiles()
+		val content = container.tiles()
 		if (content.size < 3) {
 			return false
 		}
@@ -21,7 +33,7 @@ class TileRow(private val type: TileRowType) : TilesContainer() {
 	}
 	
 	private fun validSameColor(): Boolean {
-		val currTiles = tiles()
+		val currTiles = container.tiles()
 		
 		for (tile in currTiles) {
 			if (tile.color() != currTiles.first().color()) {
@@ -35,7 +47,7 @@ class TileRow(private val type: TileRowType) : TilesContainer() {
 	}
 	
 	private fun validSameNumber(): Boolean {
-		val currTiles = tiles()
+		val currTiles = container.tiles()
 		if (currTiles.size > 4) {
 			return false
 		}
