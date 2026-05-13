@@ -4,8 +4,8 @@ import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
 
-class TileRowTest {
-	lateinit var deck: TileRow
+class RowTest {
+	lateinit var deck: Row
 	val blueOne = Tile(TileNumber.One, TileColor.Blue)
 	val blueTwo = Tile(TileNumber.Two, TileColor.Blue)
 	

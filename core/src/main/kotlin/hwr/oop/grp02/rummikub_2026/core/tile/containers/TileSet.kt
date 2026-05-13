@@ -2,12 +2,12 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
-class TilesContainer {
+class TileSet {
 	private val tiles: MutableList<Tile> = mutableListOf();
 	
 	companion object {
-		fun byList(list: List<Tile>): TilesContainer {
-			val container = TilesContainer()
+		fun byList(list: List<Tile>): TileSet {
+			val container = TileSet()
 			container.add(list)
 			return container;
 		}
@@ -43,9 +43,5 @@ class TilesContainer {
 	
 	fun sortByColor() {
 		tiles.sortBy { it.color().name }
-	}
-	
-	fun randomize() {
-		tiles.shuffle();
 	}
 }
