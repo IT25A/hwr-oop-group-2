@@ -8,8 +8,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 
 class RowTest {
-lateinit var DiffNumSameColor_Deck: Row
-lateinit var SameNumDiffColor_Deck: Row
+lateinit var diffNumSameColorDeck: Row
+lateinit var sameNumDiffColorDeck: Row
 
 	val blueOne = Tile(TileNumber.One, TileColor.Blue)
 	val blueTwo = Tile(TileNumber.Two, TileColor.Blue)
@@ -31,191 +31,166 @@ lateinit var SameNumDiffColor_Deck: Row
 	@BeforeEach
 	fun setUp() {
 		val tileSet = TileSet()
-		DiffNumSameColor_Deck = Row(RowType.DiffNumberSameColor, tileSet)
-		SameNumDiffColor_Deck = Row(RowType.SameNumberDiffColor, tileSet)
+		diffNumSameColorDeck = Row(RowType.DiffNumberSameColor, tileSet)
+		sameNumDiffColorDeck = Row(RowType.SameNumberDiffColor, tileSet)
 		
 	}
 	
-	
-	/*
-	@Test
-	fun `add and sort by RowType`() {
-	  deck.add(blueSix)
-		deck.add(blueFive)
-		deck.add(blueFour)
-		deck.add(blueThree)
-		deck.add(blueTwo)
-		deck.add(blueOne)
-		
-		val correctSet = TileSet.byList(listOf(blueOne, blueTwo, blueThree, blueFour, blueFive, blueSix))
-		val currentSet = deck.tileSet.tiles()
-		//correctSet.add(listOf(blueOne, blueTwo, blueThree, blueFour, blueFive, blueSix))
-		assertThat(deck.tiles()).isEqualTo(correctSet.tiles())
-	} */
-	
-	// --- DiffNumberSameColor ---
-	
-	
 	@Test
 	fun `DiffNumSameColor validate returns false when fewer than 3 tiles`() {
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueTwo)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueTwo)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isFalse()
+		assertThat(diffNumSameColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when tiles are not a sequence`() {
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueTwo)
-		DiffNumSameColor_Deck.add(blueFour)
-		DiffNumSameColor_Deck.add(blueSix)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueTwo)
+		diffNumSameColorDeck.add(blueFour)
+		diffNumSameColorDeck.add(blueSix)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isFalse()
+		assertThat(diffNumSameColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when double tiles in sequence`() {
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueTwo)
-		DiffNumSameColor_Deck.add(blueThree)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueTwo)
+		diffNumSameColorDeck.add(blueThree)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isFalse()
+		assertThat(diffNumSameColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when triple tiles in sequence`() {
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueTwo)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueTwo)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isFalse()
+		assertThat(diffNumSameColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when tiles have different colors`() {
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueTwo)
-		DiffNumSameColor_Deck.add(redThree)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueTwo)
+		diffNumSameColorDeck.add(redThree)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isFalse()
+		assertThat(diffNumSameColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when removing a tile and rowSize below 3 tiles`() {
-		blueRow.forEach { DiffNumSameColor_Deck.add(it) }
-		DiffNumSameColor_Deck.remove(blueOne)
-		assertThat(DiffNumSameColor_Deck.validate()).isFalse()
+		blueRow.forEach { diffNumSameColorDeck.add(it) }
+		diffNumSameColorDeck.remove(blueOne)
+		assertThat(diffNumSameColorDeck.validate()).isFalse()
 	}
-	
-	
-	// --- SameNumberDiffColor ---
 	
 	@Test
 	fun `SameNumDiffColor validate returns false when fewer than 3 tiles`() {
-		SameNumDiffColor_Deck.add(redThree)
-		SameNumDiffColor_Deck.add(blueThree)
+		sameNumDiffColorDeck.add(redThree)
+		sameNumDiffColorDeck.add(blueThree)
 		
-		assertThat(SameNumDiffColor_Deck.validate()).isFalse()
+		assertThat(sameNumDiffColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `validate returns false when tiles color is double` () {
-		SameNumDiffColor_Deck.add(redThree)
-		SameNumDiffColor_Deck.add(blueThree)
-		SameNumDiffColor_Deck.add(blueThree)
-		SameNumDiffColor_Deck.add(orangeThree)
+		sameNumDiffColorDeck.add(redThree)
+		sameNumDiffColorDeck.add(blueThree)
+		sameNumDiffColorDeck.add(blueThree)
+		sameNumDiffColorDeck.add(orangeThree)
 		
-		assertThat(SameNumDiffColor_Deck.validate()).isFalse()
+		assertThat(sameNumDiffColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `SameNumDiffColor validate returns false when triple tiles in sequence`() {
-		SameNumDiffColor_Deck.add(orangeThree)
-		SameNumDiffColor_Deck.add(orangeThree)
-		SameNumDiffColor_Deck.add(orangeThree)
-		SameNumDiffColor_Deck.add(blackThree)
+		sameNumDiffColorDeck.add(orangeThree)
+		sameNumDiffColorDeck.add(orangeThree)
+		sameNumDiffColorDeck.add(orangeThree)
+		sameNumDiffColorDeck.add(blackThree)
 		
-		assertThat(SameNumDiffColor_Deck.validate()).isFalse()
+		assertThat(sameNumDiffColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `SameNumDiffColor validate returns false when tiles have different numbers`() {
-		SameNumDiffColor_Deck.add(orangeThree)
-		SameNumDiffColor_Deck.add(blueFour)
-		SameNumDiffColor_Deck.add(redThree)
-		SameNumDiffColor_Deck.add(blackThree)
+		sameNumDiffColorDeck.add(orangeThree)
+		sameNumDiffColorDeck.add(blueFour)
+		sameNumDiffColorDeck.add(redThree)
+		sameNumDiffColorDeck.add(blackThree)
 		
-		assertThat(SameNumDiffColor_Deck.validate()).isFalse()
+		assertThat(sameNumDiffColorDeck.validate()).isFalse()
 	}
-	
-	//--Functionalities
 	
 	@Test
 	fun `Empty DiffNumSameColor_Deck is always false`(){
-		assertThat(DiffNumSameColor_Deck.validate()).isFalse()
+		assertThat(diffNumSameColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `Empty SameNumDiffColor is always false`(){
-		assertThat(SameNumDiffColor_Deck.validate()).isFalse()
+		assertThat(sameNumDiffColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `removing one tile from 4-tile valid DiffNumberSameColor row keeps it valid`() {
 		val blueFour = Tile(TileNumber.Four, TileColor.Blue)
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.add(blueTwo)
-		DiffNumSameColor_Deck.add(blueThree)
-		DiffNumSameColor_Deck.add(blueFour)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.add(blueTwo)
+		diffNumSameColorDeck.add(blueThree)
+		diffNumSameColorDeck.add(blueFour)
 		
-		DiffNumSameColor_Deck.remove(blueFour)
+		diffNumSameColorDeck.remove(blueFour)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isTrue()
+		assertThat(diffNumSameColorDeck.validate()).isTrue()
 	}
 	
 	@Test
 	fun `DiffNumSameColor returns false when more than four tiles`() {
-		threeRow.forEach { SameNumDiffColor_Deck.add(it) }
-		SameNumDiffColor_Deck.add(blueThree)
+		threeRow.forEach { sameNumDiffColorDeck.add(it) }
+		sameNumDiffColorDeck.add(blueThree)
 		
-		assertThat(SameNumDiffColor_Deck.validate()).isFalse()
+		assertThat(sameNumDiffColorDeck.validate()).isFalse()
 	}
 	
 	@Test
 	fun `add and sort by RowType`() {
-		DiffNumSameColor_Deck.add(blueSix)
-		DiffNumSameColor_Deck.add(blueFive)
-		DiffNumSameColor_Deck.add(blueFour)
-		DiffNumSameColor_Deck.add(blueThree)
-		DiffNumSameColor_Deck.add(blueTwo)
-		DiffNumSameColor_Deck.add(blueOne)
+		diffNumSameColorDeck.add(blueSix)
+		diffNumSameColorDeck.add(blueFive)
+		diffNumSameColorDeck.add(blueFour)
+		diffNumSameColorDeck.add(blueThree)
+		diffNumSameColorDeck.add(blueTwo)
+		diffNumSameColorDeck.add(blueOne)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isTrue()
+		assertThat(diffNumSameColorDeck.validate()).isTrue()
 	}
 	
 	@Test
 	fun `validate returns true for legal DiffNumSameColor`() {
-		threeRow.forEach { SameNumDiffColor_Deck.add(it) }
+		threeRow.forEach { sameNumDiffColorDeck.add(it) }
 		
-		assertThat(SameNumDiffColor_Deck.validate()).isTrue()
+		assertThat(sameNumDiffColorDeck.validate()).isTrue()
 	}
 	
 	@Test
 	fun `validate returns true for combination of add and removes`(){
-		DiffNumSameColor_Deck.add(blueThree)
-		DiffNumSameColor_Deck.add(redThree)
-		DiffNumSameColor_Deck.add(blueOne)
-		DiffNumSameColor_Deck.remove(blueThree)
-		DiffNumSameColor_Deck.add(blueFour)
-		DiffNumSameColor_Deck.remove(blueOne)
-		DiffNumSameColor_Deck.remove(redThree)
-		DiffNumSameColor_Deck.add(blueFive)
-		DiffNumSameColor_Deck.add(blueSix)
+		diffNumSameColorDeck.add(blueThree)
+		diffNumSameColorDeck.add(redThree)
+		diffNumSameColorDeck.add(blueOne)
+		diffNumSameColorDeck.remove(blueThree)
+		diffNumSameColorDeck.add(blueFour)
+		diffNumSameColorDeck.remove(blueOne)
+		diffNumSameColorDeck.remove(redThree)
+		diffNumSameColorDeck.add(blueFive)
+		diffNumSameColorDeck.add(blueSix)
 		
-		assertThat(DiffNumSameColor_Deck.validate()).isTrue()
+		assertThat(diffNumSameColorDeck.validate()).isTrue()
 		
 	}
 }
