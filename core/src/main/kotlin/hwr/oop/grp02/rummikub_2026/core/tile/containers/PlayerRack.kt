@@ -1,9 +1,10 @@
 package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
+import hwr.oop.grp02.rummikub_2026.core.IllegalMoveException
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
 class PlayerRack(
-	private val container: TileSet = TileSet()
+	private val container: TileSet = TileSet(),
 ) {
 	fun tiles() = container.tiles()
 	
@@ -12,6 +13,8 @@ class PlayerRack(
 	}
 	
 	fun play(tile: Tile) {
-		container.remove(tile)
+		if (!container.remove(tile)) {
+			throw IllegalMoveException()
+		}
 	}
 }
