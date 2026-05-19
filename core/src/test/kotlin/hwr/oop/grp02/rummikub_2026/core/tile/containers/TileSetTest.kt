@@ -5,6 +5,7 @@ import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
 import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class TileSetTest {
 	val tile1 = Tile(TileNumber.One, TileColor.Blue)
@@ -13,22 +14,22 @@ class TileSetTest {
 	
 	@Test
 	fun `tiles list is empty on initialisation`() {
-		val container = TileSet()
+		val tileSet = TileSet()
 		
-		assertThat(container.tiles()).isEmpty()
+		assertThat(tileSet.tiles()).isEmpty()
 	}
 	
 	@Test
-	fun `container#add adds a tile to the list`() {
-		val container = TileSet()
+	fun `adds a tile to the list`() {
+		val tileSet = TileSet()
 		
-		container.add(tile1)
+		tileSet.add(tile1)
 		
-		assertThat(container.tiles()).containsExactly(tile1)
+		assertThat(tileSet.tiles()).containsExactly(tile1)
 	}
 	
 	@Test
-	fun `container#add adds multiple tile to the list in correct order`() {
+	fun `adds multiple tile to the list in correct order`() {
 		val container = TileSet()
 		
 		container.add(listOf(tile1, tile2, tile3))
@@ -37,28 +38,45 @@ class TileSetTest {
 	}
 	
 	@Test
-	fun `container#remove removes a tile from the list`() {
-		val container = TileSet.byList(listOf(tile1))
+	fun `removes a tile from the list`() {
+		val tileSet = TileSet.byList(listOf(tile1))
 		
-		container.remove(tile1)
+		val result = tileSet.remove(tile1)
 		
-		assertThat(container.tiles()).isEmpty()
+		assertThat(tileSet.tiles()).isEmpty()
+		assertThat(result).isTrue()
+	}
+	
+	@Test
+	fun `remove first does remove first tile and returns it`() {
+		val tileSet = TileSet.byList(listOf(tile1, tile2));
+		
+		val result = tileSet.removeFirst()
+		
+		assertThat(tileSet.tiles()).containsExactly(tile2)
+		assertThat(result).isEqualTo(tile1);
+	}
+	
+	@Test
+	fun `remove first on empty list throws exception`() {
+		val tileSet = TileSet();
+		assertThatThrownBy { tileSet.removeFirst() }.isInstanceOf(NoSuchElementException::class.java)
 	}
 	
 	@Test
 	fun `order of tiles is preserved`() {
-		val container = TileSet.byList(listOf(tile1, tile2, tile3))
+		val tileSet = TileSet.byList(listOf(tile1, tile2, tile3))
 		
-		val contentOfContainer = container.tiles()
+		val contentOftileSet = tileSet.tiles()
 		
-		assertThat(contentOfContainer).isEqualTo(listOf(tile1, tile2, tile3))
+		assertThat(contentOftileSet).isEqualTo(listOf(tile1, tile2, tile3))
 	}
 	
 	@Test
-	fun `container#size has correct size`() {
-		val container = TileSet.byList(listOf(tile1, tile2, tile3))
+	fun `has correct size`() {
+		val tileSet = TileSet.byList(listOf(tile1, tile2, tile3))
 		
-		assertThat(container.size()).isEqualTo(3)
+		assertThat(tileSet.size()).isEqualTo(3)
 	}
 	
 	@Test
