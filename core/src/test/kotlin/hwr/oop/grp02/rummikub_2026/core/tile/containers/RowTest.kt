@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 
 class RowTest {
-
+	
 	val blueOne = Tile(TileNumber.One, TileColor.Blue)
 	val blueTwo = Tile(TileNumber.Two, TileColor.Blue)
 	
@@ -20,7 +20,6 @@ class RowTest {
 	val redThree = Tile(TileNumber.Three, TileColor.Red)
 	val blackThree = Tile(TileNumber.Three, TileColor.Black)
 	val orangeThree = Tile(TileNumber.Three, TileColor.Orange)
-	
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when fewer than 3 tiles`() {
@@ -65,13 +64,13 @@ class RowTest {
 	@Test
 	fun `SameNumDiffColor validate returns false when fewer than 3 tiles`() {
 		val tileSet = TileSet.byList(listOf(redThree, blueThree))
-		val sameNumDiffColorRow  = Row(RowType.SameNumberDiffColor, tileSet)
+		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
 		
 		assertThat(sameNumDiffColorRow.validate()).isFalse()
 	}
 	
 	@Test
-	fun `validate returns false when tiles color is double` () {
+	fun `validate returns false when tiles color is double`() {
 		val tileSet = TileSet.byList(listOf(redThree, blueThree, blueThree, orangeThree))
 		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
 		
@@ -125,7 +124,7 @@ class RowTest {
 	}
 	
 	@Test
-	fun `validate returns true for combination of add and removes`(){
+	fun `validate returns true for combination of add and removes`() {
 		val tileSet = TileSet()
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
 		diffNumSameColorRow.add(blueThree)
