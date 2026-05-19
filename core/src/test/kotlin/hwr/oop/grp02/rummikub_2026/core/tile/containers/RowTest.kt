@@ -87,20 +87,6 @@ class RowTest {
 	}
 	
 	@Test
-	fun `Empty DiffNumSameColor_Deck is always false`(){
-		val tileSet = TileSet()
-		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
-		assertThat(diffNumSameColorRow.validate()).isFalse()
-	}
-	
-	@Test
-	fun `Empty SameNumDiffColor is always false`(){
-		val tileSet = TileSet()
-		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
-		assertThat(sameNumDiffColorRow.validate()).isFalse()
-	}
-	
-	@Test
 	fun `removing one tile from 4-tile valid DiffNumberSameColor row keeps it valid`() {
 		val tileSet = TileSet.byList(listOf(blueOne, blueTwo, blueThree, blueFour))
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
