@@ -114,4 +114,12 @@ class TileSetTest {
 		
 		assertThat(tileSet.tiles()).isEqualTo(listOf(tile1, tile3, tile2))
 	}
+	
+	@Test
+	fun `remove tile from empty list`() {
+		val container = TileSet()
+		container.remove(tile1)
+		
+		assertThat(container.tiles()).isEmpty()
+	}
 }
