@@ -2,17 +2,7 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
-class TileSet {
-	private val tiles: MutableList<Tile> = mutableListOf();
-	
-	companion object {
-		fun byList(list: List<Tile>): TileSet {
-			val container = TileSet()
-			container.add(list)
-			return container;
-		}
-	}
-	
+data class TileSet(private val tiles: MutableList<Tile> = mutableListOf()) {
 	fun add(tile: Tile) {
 		tiles.add(tile);
 	}

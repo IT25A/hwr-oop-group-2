@@ -39,7 +39,7 @@ class TileSetTest {
 	
 	@Test
 	fun `removes a tile from the list`() {
-		val tileSet = TileSet.byList(listOf(tile1))
+		val tileSet = TileSet(mutableListOf(tile1))
 		
 		val result = tileSet.remove(tile1)
 		
@@ -49,7 +49,7 @@ class TileSetTest {
 	
 	@Test
 	fun `remove first does remove first tile and returns it`() {
-		val tileSet = TileSet.byList(listOf(tile1, tile2));
+		val tileSet = TileSet(mutableListOf(tile1, tile2));
 		
 		val result = tileSet.removeFirst()
 		
@@ -65,7 +65,7 @@ class TileSetTest {
 	
 	@Test
 	fun `order of tiles is preserved`() {
-		val tileSet = TileSet.byList(listOf(tile1, tile2, tile3))
+		val tileSet = TileSet(mutableListOf(tile1, tile2, tile3))
 		
 		val contentOftileSet = tileSet.tiles()
 		
@@ -74,14 +74,14 @@ class TileSetTest {
 	
 	@Test
 	fun `has correct size`() {
-		val tileSet = TileSet.byList(listOf(tile1, tile2, tile3))
+		val tileSet = TileSet(mutableListOf(tile1, tile2, tile3))
 		
 		assertThat(tileSet.size()).isEqualTo(3)
 	}
 	
 	@Test
 	fun `by-number - correct sorting`() {
-		val tileSet = TileSet.byList(listOf(tile2, tile1, tile3))
+		val tileSet = TileSet(mutableListOf(tile2, tile1, tile3))
 		
 		tileSet.sortByNumber()
 		
@@ -90,7 +90,7 @@ class TileSetTest {
 	
 	@Test
 	fun `by-color - correct sorting`() {
-		val tileSet = TileSet.byList(listOf(tile2, tile1, tile3))
+		val tileSet = TileSet(mutableListOf(tile2, tile1, tile3))
 		
 		tileSet.sortByColor()
 		
@@ -117,7 +117,7 @@ class TileSetTest {
 	
 	@Test
 	fun `by-number - sorted list remains sorted`() {
-		val tileSet = TileSet.byList(listOf(tile1, tile2, tile3))
+		val tileSet = TileSet(mutableListOf(tile1, tile2, tile3))
 		
 		tileSet.sortByNumber()
 		
@@ -126,7 +126,7 @@ class TileSetTest {
 	
 	@Test
 	fun `by-color - sorted list remains sorted`() {
-		val tileSet = TileSet.byList(listOf(tile1, tile3, tile2))
+		val tileSet = TileSet(mutableListOf(tile1, tile3, tile2))
 		
 		tileSet.sortByColor()
 		

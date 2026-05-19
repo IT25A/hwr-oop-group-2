@@ -3,6 +3,7 @@ package hwr.oop.examples.template.service
 import hwr.oop.examples.template.service.api.GameActionApi
 import hwr.oop.examples.template.service.api.GameApi
 import hwr.oop.examples.template.service.model.*
+import hwr.oop.grp02.rummikub_2026.core.board.Board
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
