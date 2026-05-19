@@ -18,7 +18,6 @@ class BoardTest {
 	val redOne = Tile(TileNumber.One, TileColor.Red)
 	val orangeOne = Tile(TileNumber.One, TileColor.Orange)
 	
-	
 	@Test
 	fun `newRow changes the board`() {
 		val board = Board()
@@ -42,10 +41,12 @@ class BoardTest {
 		val tileSet1 = TileSet(mutableListOf(blueOne, blueTwo, blueThree))
 		val tileSet2 = TileSet(mutableListOf(blueOne, redOne, orangeOne))
 		
-		val board = Board(listOf(
-			Row(RowType.DiffNumberSameColor, tileSet1),
-			Row(RowType.SameNumberDiffColor, tileSet2)
-		))
+		val board = Board(
+			listOf(
+				Row(RowType.DiffNumberSameColor, tileSet1),
+				Row(RowType.SameNumberDiffColor, tileSet2)
+			)
+		)
 		
 		assertThat(board.validate()).isTrue()
 	}
@@ -53,10 +54,12 @@ class BoardTest {
 	@Test
 	fun `validation checks every row (negative case)`() {
 		val tileSet1 = TileSet(mutableListOf(blueOne, blueTwo, blueThree))
-		val board = Board(listOf(
+		val board = Board(
+			listOf(
 				Row(RowType.DiffNumberSameColor, tileSet1),
 				Row(RowType.SameNumberDiffColor, tileSet1)
-			))
+			)
+		)
 		assertThat(board.validate()).isFalse()
 	}
 	

@@ -3,9 +3,9 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
-import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.Test
 
 class TileSetTest {
 	val tile1 = Tile(TileNumber.One, TileColor.Blue)
