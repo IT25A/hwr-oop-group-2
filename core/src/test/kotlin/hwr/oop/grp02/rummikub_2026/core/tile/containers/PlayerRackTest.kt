@@ -22,12 +22,6 @@ class PlayerRackTest {
 	val blueTwo = Tile(TileNumber.Two, TileColor.Blue)
 	
 	@Test
-	fun `tiles method returns a list`() {
-		val list = rack.tiles()
-		assertThat(list).isInstanceOf(List::class.java)
-	}
-	
-	@Test
 	fun `tiles method returns an empty list`() {
 		val list = rack.tiles()
 		assertThat(list).isEmpty()
