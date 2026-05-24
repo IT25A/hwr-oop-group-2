@@ -1,4 +1,4 @@
-package hwr.oop.grp02.rummikub_2026.core.board
+package hwr.oop.grp02.rummikub_2026.core
 
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.Row
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.RowType

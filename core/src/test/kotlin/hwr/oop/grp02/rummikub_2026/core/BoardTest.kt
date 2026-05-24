@@ -1,6 +1,5 @@
 package hwr.oop.grp02.rummikub_2026.core
 
-import hwr.oop.grp02.rummikub_2026.core.board.Board
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
@@ -19,13 +18,12 @@ class BoardTest {
 	val orangeOne = Tile(TileNumber.One, TileColor.Orange)
 	
 	@Test
-	fun `newRow changes the board`() {
-		val board = Board()
+	fun `newRow adds a new row to the board`() {
+		val board = Board(listOf(Row(RowType.SameNumberDiffColor)))
 		val newBoard = board.newRow(RowType.DiffNumberSameColor)
 		assertThat(newBoard.rows().size).isEqualTo(board.rows().size + 1)
 		assertThat(newBoard.rows()).containsAll(board.rows())
-		assertThat(newBoard.rows()).containsExactly(Row(RowType.DiffNumberSameColor))
-		
+		assertThat(newBoard.rows()).contains(Row(RowType.DiffNumberSameColor))
 	}
 	
 	@Test
