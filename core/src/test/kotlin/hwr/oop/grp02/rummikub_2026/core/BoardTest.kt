@@ -62,7 +62,7 @@ class BoardTest {
 	}
 	
 	@Test
-	fun `validation does fail on empty rows`() {
+	fun `validation should pass if there are no rows`() {
 		val board = Board()
 		assertThat(board.validate()).isTrue()
 	}
