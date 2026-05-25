@@ -11,13 +11,13 @@ data class Board(private val rows: List<Row> = listOf()) {
 	}
 	
 	fun newRow(type: RowType): Board {
-		val original = mutableListOf(*rows.toTypedArray())
+		val original = rows.toMutableList()
 		original.add(Row(type))
 		return copy(rows = original.toList())
 	}
 	
 	fun removeEmptyRows(): Board {
-		val original = mutableListOf(*rows.toTypedArray())
+		val original = rows.toMutableList()
 		original.removeIf { it.size() == 0 }
 		return copy(rows = original.toList())
 	}
