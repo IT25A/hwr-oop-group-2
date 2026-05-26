@@ -3,8 +3,8 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
-import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
 class RowTest {
 	
@@ -23,7 +23,7 @@ class RowTest {
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when fewer than 3 tiles`() {
-		val tileSet = TileSet.byList(listOf(blueOne, blueTwo))
+		val tileSet = TileSet(mutableListOf(blueOne, blueTwo))
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
 		
 		assertThat(diffNumSameColorRow.validate()).isFalse()
@@ -31,7 +31,7 @@ class RowTest {
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when tiles are not a sequence`() {
-		val tileSet = TileSet.byList(listOf(blueOne, blueTwo, blueFour, blueSix))
+		val tileSet = TileSet(mutableListOf(blueOne, blueTwo, blueFour, blueSix))
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
 		
 		assertThat(diffNumSameColorRow.validate()).isFalse()
@@ -39,7 +39,7 @@ class RowTest {
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when double tiles in sequence`() {
-		val tileSet = TileSet.byList(listOf(blueOne, blueTwo, blueOne, blueThree))
+		val tileSet = TileSet(mutableListOf(blueOne, blueTwo, blueOne, blueThree))
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
 		
 		assertThat(diffNumSameColorRow.validate()).isFalse()
@@ -47,7 +47,7 @@ class RowTest {
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when tiles have different colors`() {
-		val tileSet = TileSet.byList(listOf(blueOne, blueTwo, redThree))
+		val tileSet = TileSet(mutableListOf(blueOne, blueTwo, redThree))
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
 		
 		assertThat(diffNumSameColorRow.validate()).isFalse()
@@ -55,7 +55,7 @@ class RowTest {
 	
 	@Test
 	fun `DiffNumSameColor validate returns false when removing a tile and rowSize below 3 tiles`() {
-		val tileSet = TileSet.byList(listOf(blueOne, blueTwo, blueThree))
+		val tileSet = TileSet(mutableListOf(blueOne, blueTwo, blueThree))
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
 		diffNumSameColorRow.remove(blueOne)
 		assertThat(diffNumSameColorRow.validate()).isFalse()
@@ -63,7 +63,7 @@ class RowTest {
 	
 	@Test
 	fun `SameNumDiffColor validate returns false when fewer than 3 tiles`() {
-		val tileSet = TileSet.byList(listOf(redThree, blueThree))
+		val tileSet = TileSet(mutableListOf(redThree, blueThree))
 		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
 		
 		assertThat(sameNumDiffColorRow.validate()).isFalse()
@@ -71,7 +71,7 @@ class RowTest {
 	
 	@Test
 	fun `validate returns false when tiles color is double`() {
-		val tileSet = TileSet.byList(listOf(redThree, blueThree, blueThree, orangeThree))
+		val tileSet = TileSet(mutableListOf(redThree, blueThree, blueThree, orangeThree))
 		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
 		
 		assertThat(sameNumDiffColorRow.validate()).isFalse()
@@ -79,7 +79,7 @@ class RowTest {
 	
 	@Test
 	fun `SameNumDiffColor validate returns false when tiles have different numbers`() {
-		val tileSet = TileSet.byList(listOf(redThree, blueFour, blackThree, orangeThree))
+		val tileSet = TileSet(mutableListOf(redThree, blueFour, blackThree, orangeThree))
 		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
 		
 		assertThat(sameNumDiffColorRow.validate()).isFalse()
@@ -87,7 +87,7 @@ class RowTest {
 	
 	@Test
 	fun `removing one tile from 4-tile valid DiffNumberSameColor row keeps it valid`() {
-		val tileSet = TileSet.byList(listOf(blueOne, blueTwo, blueThree, blueFour))
+		val tileSet = TileSet(mutableListOf(blueOne, blueTwo, blueThree, blueFour))
 		val diffNumSameColorRow = Row(RowType.DiffNumberSameColor, tileSet)
 		diffNumSameColorRow.remove(blueFour)
 		
@@ -96,7 +96,7 @@ class RowTest {
 	
 	@Test
 	fun `DiffNumSameColor returns false when more than four tiles`() {
-		val tileSet = TileSet.byList(listOf(redThree, blueThree, blackThree, orangeThree))
+		val tileSet = TileSet(mutableListOf(redThree, blueThree, blackThree, orangeThree))
 		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
 		sameNumDiffColorRow.add(blueThree)
 		
@@ -117,7 +117,7 @@ class RowTest {
 	
 	@Test
 	fun `validate returns true for legal DiffNumSameColor`() {
-		val tileSet = TileSet.byList(listOf(redThree, blueThree, blackThree, orangeThree))
+		val tileSet = TileSet(mutableListOf(redThree, blueThree, blackThree, orangeThree))
 		val sameNumDiffColorRow = Row(RowType.SameNumberDiffColor, tileSet)
 		
 		assertThat(sameNumDiffColorRow.validate()).isTrue()

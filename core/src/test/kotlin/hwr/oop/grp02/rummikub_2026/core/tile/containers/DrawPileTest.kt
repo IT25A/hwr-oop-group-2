@@ -16,7 +16,7 @@ class DrawPileTest {
 	
 	@Test
 	fun `drawing a tile from DrawingDeck`() {
-		val container = TileSet.byList(listOf(tile1, tile2, tile3, tile4))
+		val container = TileSet(mutableListOf(tile1, tile2, tile3, tile4))
 		val deck = DrawPile(container)
 		
 		val drawnTile = deck.draw()
