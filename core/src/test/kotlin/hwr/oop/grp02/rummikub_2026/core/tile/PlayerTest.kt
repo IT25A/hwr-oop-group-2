@@ -2,6 +2,7 @@ package hwr.oop.grp02.rummikub_2026.core.tile
 
 import hwr.oop.grp02.rummikub_2026.core.IllegalMoveException
 import hwr.oop.grp02.rummikub_2026.core.player.Player
+import hwr.oop.grp02.rummikub_2026.core.tile.containers.TileSet
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
@@ -38,9 +39,7 @@ class PlayerTest {
 
     @Test
     fun `player can remove tile`() {
-        val player = Player(name = "Alice", mutableListOf(tile1, tile2, tile3))
-
-        player.add(tile1, tile2, tile3)
+        val player = Player(name = "Alice", TileSet(mutableListOf(tile1, tile2, tile3)))
         player.remove(tile2)
         assertThat(player.rack()).containsExactlyInAnyOrder(tile1, tile3)
     }
@@ -54,14 +53,14 @@ class PlayerTest {
 
     @Test
     fun `player can sort by number`() {
-        player.add(tile4, tile3, tile2, tile1)
+        val player = Player(name = "Alice", TileSet(mutableListOf(tile4, tile3, tile2, tile1)))
         player.sortByNumber()
         assertThat(player.rack()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
     }
 
     @Test
     fun `player can sort by color`() {
-        player.add(tile1, tile2, tile3, tile4)
+        val player = Player(name = "Alice", TileSet(mutableListOf(tile1, tile2, tile3, tile4)))
         player.sortByColor()
         assertThat(player.rack()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
     }
@@ -69,7 +68,7 @@ class PlayerTest {
     @Test
     fun `drawing nothing does not change the list`() {
         val tiles = player.rack()
-        player.add()
+        val player = Player(name = "Alice", TileSet())
         assertThat(player.rack()).isEqualTo(tiles)
     }
 
