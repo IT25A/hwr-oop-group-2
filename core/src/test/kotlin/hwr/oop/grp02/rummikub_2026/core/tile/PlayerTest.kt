@@ -10,29 +10,26 @@ import org.junit.jupiter.api.Test
 
 class PlayerTest {
 
-    lateinit var player: Player
     val tile1 = Tile(TileNumber.One, TileColor.Blue)
     val tile2 = Tile(TileNumber.Five, TileColor.Red)
     val tile3 = Tile(TileNumber.Four, TileColor.Orange)
     val tile4 = Tile(TileNumber.Six, TileColor.Red)
 
-    @BeforeEach
-    fun setup() {
-        player = Player(name = "Alice")
-    }
-
     @Test
     fun `player starts with empty tiles`() {
+        val player = Player(name = "Alice")
         assertThat(player.rack()).isEmpty()
     }
 
     @Test
     fun `players's name will be returned`() {
+        val player = Player(name = "Alice")
         assertThat(player.name()).isEqualTo("Alice")
     }
 
     @Test
     fun `player can add single tile`() {
+        val player = Player(name = "Alice")
         player.add(tile1)
         assertThat(player.rack()).containsExactly(tile1)
     }
@@ -46,6 +43,7 @@ class PlayerTest {
 
     @Test
     fun `player throws exception when removing non-existent tile`() {
+        val player = Player(name = "Alice")
         player.add(tile1)
         assertThatThrownBy { player.remove(tile2) }.isInstanceOf(IllegalMoveException::class.java)
         assertThat(player.rack()).containsExactly(tile1)
@@ -67,8 +65,8 @@ class PlayerTest {
 
     @Test
     fun `drawing nothing does not change the list`() {
-        val tiles = player.rack()
         val player = Player(name = "Alice", TileSet())
+        val tiles = player.rack()
         assertThat(player.rack()).isEqualTo(tiles)
     }
 
