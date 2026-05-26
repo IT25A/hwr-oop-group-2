@@ -7,15 +7,17 @@ enum class RowType {
 	SameNumberDiffColor
 }
 
-class Row(private val type: RowType, private val tileSet: TileSet = TileSet()) {
-	fun add(tile: Tile) {
+data class Row(private val type: RowType, private val tileSet: TileSet = TileSet()) {
+	fun size() = tileSet.size()
+	
+	internal fun add(tile: Tile) {
 		tileSet.add(tile)
 		if (type == RowType.DiffNumberSameColor) {
 			tileSet.sortByNumber()
 		}
 	}
 	
-	fun remove(tile: Tile) {
+	internal fun remove(tile: Tile) {
 		tileSet.remove(tile)
 	}
 	
