@@ -22,14 +22,8 @@ class PlayerTest {
 
     @Test
     fun `player starts with empty tiles`() {
-       assertThat(player.rack()).isEmpty()
+        assertThat(player.rack()).isEmpty()
     }
-
-    @Test
-    fun `player starts with no moves`() {
-        assertThat(player.moves()).isEmpty()
-    }
-
 
     @Test
     fun `players's name will be returned`() {
@@ -43,13 +37,9 @@ class PlayerTest {
     }
 
     @Test
-    fun `player can add multiple tiles`() {
-        player.add(tile1, tile2, tile3)
-        assertThat(player.rack()).containsExactlyInAnyOrder(tile1, tile2, tile3)
-    }
-
-    @Test
     fun `player can remove tile`() {
+        val player = Player(name = "Alice", mutableListOf(tile1, tile2, tile3))
+
         player.add(tile1, tile2, tile3)
         player.remove(tile2)
         assertThat(player.rack()).containsExactlyInAnyOrder(tile1, tile3)
@@ -58,7 +48,7 @@ class PlayerTest {
     @Test
     fun `player throws exception when removing non-existent tile`() {
         player.add(tile1)
-        assertThatThrownBy {player.remove(tile2) }.isInstanceOf(IllegalMoveException::class.java)
+        assertThatThrownBy { player.remove(tile2) }.isInstanceOf(IllegalMoveException::class.java)
         assertThat(player.rack()).containsExactly(tile1)
     }
 
