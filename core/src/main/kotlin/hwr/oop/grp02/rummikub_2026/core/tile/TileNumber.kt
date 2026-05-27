@@ -16,6 +16,6 @@ enum class TileNumber(private val value: Int) {
 	Thirteen(13);
 	
 	fun value(): Int {
-		return this.value;
+		return this.value
 	}
 }

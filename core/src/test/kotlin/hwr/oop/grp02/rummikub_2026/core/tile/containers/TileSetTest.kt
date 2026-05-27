@@ -49,17 +49,17 @@ class TileSetTest {
 	
 	@Test
 	fun `remove first does remove first tile and returns it`() {
-		val tileSet = TileSet(mutableListOf(tile1, tile2));
+		val tileSet = TileSet(mutableListOf(tile1, tile2))
 		
 		val result = tileSet.removeFirst()
 		
 		assertThat(tileSet.tiles()).containsExactly(tile2)
-		assertThat(result).isEqualTo(tile1);
+		assertThat(result).isEqualTo(tile1)
 	}
 	
 	@Test
 	fun `remove first on empty list throws exception`() {
-		val tileSet = TileSet();
+		val tileSet = TileSet()
 		assertThatThrownBy { tileSet.removeFirst() }.isInstanceOf(NoSuchElementException::class.java)
 	}
 	
@@ -67,9 +67,9 @@ class TileSetTest {
 	fun `order of tiles is preserved`() {
 		val tileSet = TileSet(mutableListOf(tile1, tile2, tile3))
 		
-		val contentOftileSet = tileSet.tiles()
+		val contentOfTiles = tileSet.tiles()
 		
-		assertThat(contentOftileSet).isEqualTo(listOf(tile1, tile2, tile3))
+		assertThat(contentOfTiles).isEqualTo(listOf(tile1, tile2, tile3))
 	}
 	
 	@Test

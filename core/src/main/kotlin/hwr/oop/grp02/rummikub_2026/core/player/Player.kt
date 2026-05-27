@@ -11,8 +11,8 @@ class Player(private val name: String, private val container: TileSet = TileSet(
     fun name() = name
 
     internal fun add(tile: Tile) {
-        container.add(tile);
-    }
+        container.add(tile)
+		}
 
     internal fun remove(tile: Tile) {
         if (!container.remove(tile)) {
