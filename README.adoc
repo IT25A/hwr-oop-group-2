@@ -1,15 +1,53 @@
-= HWR OOP Lecture Project Template
-
-// TODO: Change headline to better fit your project!
+= HWR OOP Group 2 Rummikub
 
 This repository contains a student project created for an ongoing lecture on object-oriented programming with Kotlin at HWR Berlin (summer term 2026).
 
 WARNING: This code is for educational purposes only.
 Do not rely on it!
 
-== Feature Liste
+== Feature List
 
-// TODO : Add a list of features that your project implements. This can be a simple bullet list or a tables
+* ✓ Tiles
+** ✓ Colors (Red, Black, Blue, Orange)
+** ✓ Numbers (1–13)
+** ✓ Double set (2 × 52 = 104 tiles)
+* ✓ Tile Containers
+** ✓ Draw pile
+** ✓ Player rack (TileSet)
+** ✓ Sorting (by number and color)
+* ✓ Rows
+** ✓ Same color, consecutive numbers
+** ✓ Same number, different colors
+** ✓ Validation (minimum length 3, no duplicates)
+* ✓ Board
+** ✓ Row management
+** ✓ Board validation
+** ✓ Remove empty rows
+* ✓ Players
+** ✓ Player count (2–4)
+** ✓ Rack with 14 starting tiles
+** ✓ Add / remove tiles
+* ✓ Game Setup
+** ✓ Shuffle deck
+** ✓ Deal tiles
+** ✓ Draw pile from remaining tiles
+* ❏ Moves
+** ❏ Move data model
+** ❏ Execute moves (integrated in Game)
+** ❏ Move validation
+* ❏ Turn Flow
+** ✓ Current player
+** ✓ Next player / turn rotation
+** ❏ Draw tile as a move
+** ❏ Place tiles as a move
+* ❏ Game Rules
+** ❏ Initial meld (minimum value 30)
+** ❏ Jokers
+** ❏ Manipulate existing rows
+* ❏ End of Game
+** ❏ Win condition (empty rack)
+** ❏ Score calculation
+
 
 == Modulstruktur
 

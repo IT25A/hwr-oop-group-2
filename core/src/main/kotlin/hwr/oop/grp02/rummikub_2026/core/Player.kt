@@ -1,6 +1,5 @@
-package hwr.oop.grp02.rummikub_2026.core.player
+package hwr.oop.grp02.rummikub_2026.core
 
-import hwr.oop.grp02.rummikub_2026.core.IllegalMoveException
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.TileSet
 
