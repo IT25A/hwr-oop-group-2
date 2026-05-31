@@ -1,5 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
+import hwr.oop.grp02.rummikub_2026.core.MoveTarget
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
 enum class RowType {
@@ -7,7 +8,7 @@ enum class RowType {
 	SameNumberDiffColor
 }
 
-data class Row(private val type: RowType, private val tileSet: TileSet = TileSet()) {
+data class Row(private val type: RowType, private val tileSet: TileSet = TileSet()) : MoveTarget {
 	fun size() = tileSet.size()
 	
 	internal fun add(tile: Tile) {
@@ -17,8 +18,8 @@ data class Row(private val type: RowType, private val tileSet: TileSet = TileSet
 		}
 	}
 	
-	internal fun remove(tile: Tile) {
-		tileSet.remove(tile)
+	internal fun remove(tile: Tile): Boolean {
+		return tileSet.remove(tile)
 	}
 	
 	fun validate(): Boolean {

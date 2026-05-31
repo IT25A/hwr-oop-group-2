@@ -1,11 +1,10 @@
 package hwr.oop.grp02.rummikub_2026.core.tile
 
 import hwr.oop.grp02.rummikub_2026.core.IllegalMoveException
-import hwr.oop.grp02.rummikub_2026.core.player.Player
+import hwr.oop.grp02.rummikub_2026.core.Player
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.TileSet
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class PlayerTest {
