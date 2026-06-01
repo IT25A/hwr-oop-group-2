@@ -32,7 +32,7 @@ class Game(internal val drawPile: DrawPile, internal val players: List<Player>, 
 			require(playerNames.size in 2..4) { "Rummikub requires 2 to 4 players" }
 			
 			val players = playerNames.map {
-				Player(it, TileSet(List(14, { drawPile.draw() }).toMutableList()))
+				Player(it, TileSet(List(14) { drawPile.draw() }.toMutableList()))
 			}
 			
 			return Game(drawPile, players, Board())
