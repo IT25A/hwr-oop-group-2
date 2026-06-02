@@ -7,46 +7,43 @@ Do not rely on it!
 
 == Feature List
 
-* ✓ Tiles
-** ✓ Colors (Red, Black, Blue, Orange)
-** ✓ Numbers (1–13)
-** ✓ Double set (2 × 52 = 104 tiles)
-* ✓ Tile Containers
-** ✓ Draw pile
-** ✓ Player rack (TileSet)
-** ✓ Sorting (by number and color)
-* ✓ Rows
-** ✓ Same color, consecutive numbers
-** ✓ Same number, different colors
-** ✓ Validation (minimum length 3, no duplicates)
-* ✓ Board
-** ✓ Row management
-** ✓ Board validation
-** ✓ Remove empty rows
-* ✓ Players
-** ✓ Player count (2–4)
-** ✓ Rack with 14 starting tiles
-** ✓ Add / remove tiles
-* ✓ Game Setup
-** ✓ Shuffle deck
-** ✓ Deal tiles
-** ✓ Draw pile from remaining tiles
-* ❏ Moves
-** ❏ Move data model
-** ❏ Execute moves (integrated in Game)
-** ❏ Move validation
-* ❏ Turn Flow
-** ✓ Current player
-** ✓ Next player / turn rotation
-** ❏ Draw tile as a move
-** ❏ Place tiles as a move
-* ❏ Game Rules
-** ❏ Initial meld (minimum value 30)
-** ❏ Jokers
-** ❏ Manipulate existing rows
-* ❏ End of Game
-** ❏ Win condition (empty rack)
-** ❏ Score calculation
+* [x] Tiles
+** [x] Colors (Red, Black, Blue, Orange)
+** [x] Numbers (1–13)
+* [x] Tile Containers
+** [x] Draw pile
+*** [x] Shuffle deck
+*** [x] Double set (2 × 52 = 104 tiles)
+** [x] Player
+** [x] Groups
+*** [x] Same color, consecutive numbers
+*** [x] Same number, different colors
+*** [x] Validation (minimum length 3, no duplicates)
+
+* [x] Board
+** [x] Group management
+** [x] Board validation
+
+* [x] Player
+** [x] Add / remove tiles
+
+* [x] Game
+** [x] Draw pile from remaining tiles
+** [x] Player count (2–4)
+** [x] All players with 14 starting tiles
+** [ ] Turn Flow
+*** [x] Current player
+*** [x] Next player / turn rotation
+*** [ ] make move by providing new Board
+
+* [ ] Game Rules
+** [ ] Initial meld (minimum value 30)
+** [ ] Jokers
+** [ ] Manipulate existing rows
+
+* [ ] End of Game
+** [ ] Win condition (empty rack)
+** [ ] Score calculation
 
 
 == Modulstruktur

@@ -1,24 +1,11 @@
 package hwr.oop.grp02.rummikub_2026.core
 
-import hwr.oop.grp02.rummikub_2026.core.tile.containers.Row
-import hwr.oop.grp02.rummikub_2026.core.tile.containers.RowType
+import hwr.oop.grp02.rummikub_2026.core.tile.containers.Group
 
-data class Board(private val rows: List<Row> = listOf()) {
-	fun rows() = rows
+data class Board(private val groups: List<Group> = listOf()) {
+	fun rows() = groups
 	
 	fun validate(): Boolean {
-		return rows.all { it.validate() }
-	}
-	
-	fun newRow(type: RowType): Board {
-		val original = rows.toMutableList()
-		original.add(Row(type))
-		return copy(rows = original.toList())
-	}
-	
-	fun removeEmptyRows(): Board {
-		val original = rows.toMutableList()
-		original.removeIf { it.size() == 0 }
-		return copy(rows = original.toList())
+		return groups.all { it.validate() }
 	}
 }

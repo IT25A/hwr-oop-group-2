@@ -80,4 +80,13 @@ class GameTest {
 			Game.withShuffledDrawPile(setOf("A", "B", "C", "D", "E"))
 		}.isInstanceOf(IllegalArgumentException::class.java)
 	}
+	
+	@Test
+	fun `creating game with shuffled drawPile is actually shuffled`() {
+		val shuffledGame = Game.withShuffledDrawPile(setOf("A", "B", "C"))
+		val unShuffledGame = Game.withUnShuffledDrawPile(setOf("A", "B", "C"))
+		
+		assertThat(unShuffledGame.drawPile.tiles()).hasSameSizeAs(shuffledGame.drawPile.tiles())
+		assertThat(unShuffledGame.drawPile.tiles()).isNotEqualTo(shuffledGame.drawPile.tiles())
+	}
 }

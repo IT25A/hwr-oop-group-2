@@ -3,7 +3,6 @@ package hwr.oop.grp02.rummikub_2026.core
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
-import hwr.oop.grp02.rummikub_2026.core.tile.containers.TileSet
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -29,44 +28,21 @@ class PlayerTest {
 	@Test
 	fun `player can add single tile`() {
 		val player = Player(name = "Alice")
-		player.add(tile1)
-		Assertions.assertThat(player.rack()).containsExactly(tile1)
+		val newPlayer = player.add(tile1)
+		Assertions.assertThat(newPlayer.rack()).containsExactly(tile1)
 	}
 	
 	@Test
 	fun `player can remove tile`() {
-		val player = Player(name = "Alice", TileSet(mutableListOf(tile1, tile2, tile3)))
-		player.remove(tile2)
-		Assertions.assertThat(player.rack()).containsExactlyInAnyOrder(tile1, tile3)
+		val player = Player(name = "Alice", listOf(tile1, tile2, tile3))
+		val newPlayer = player.remove(tile2)
+		Assertions.assertThat(newPlayer.rack()).containsExactlyInAnyOrder(tile1, tile3)
 	}
 	
 	@Test
 	fun `player throws exception when removing non-existent tile`() {
-		val player = Player(name = "Alice")
-		player.add(tile1)
-		Assertions.assertThatThrownBy { player.remove(tile2) }.isInstanceOf(IllegalMoveException::class.java)
-		Assertions.assertThat(player.rack()).containsExactly(tile1)
-	}
-	
-	@Test
-	fun `player can sort by number`() {
-		val player = Player(name = "Alice", TileSet(mutableListOf(tile4, tile3, tile2, tile1)))
-		player.sortByNumber()
-		Assertions.assertThat(player.rack()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
-	}
-	
-	@Test
-	fun `player can sort by color`() {
-		val player = Player(name = "Alice", TileSet(mutableListOf(tile1, tile2, tile3, tile4)))
-		player.sortByColor()
-		Assertions.assertThat(player.rack()).isEqualTo(listOf(tile1, tile3, tile2, tile4))
-	}
-	
-	@Test
-	fun `drawing nothing does not change the list`() {
-		val player = Player(name = "Alice", TileSet())
-		val tiles = player.rack()
-		Assertions.assertThat(player.rack()).isEqualTo(tiles)
+		val player = Player(name = "Alice", listOf(tile1))
+		Assertions.assertThatThrownBy { player.remove(tile2) }.isInstanceOf(NoSuchTileException::class.java)
 	}
 	
 }
