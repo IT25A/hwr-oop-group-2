@@ -18,4 +18,10 @@ data class Player(private val name: String, private val tiles: List<Tile> = list
 		if (!original.remove(tile)) throw NoSuchTileException()
 		return copy(tiles = original.toList())
 	}
+	
+	fun removeAll(vararg tile: Tile): Player {
+		val original = tiles.toMutableList()
+		if (!original.removeAll(tile.toList())) throw NoSuchTileException()
+		return copy(tiles = original.toList())
+	}
 }

@@ -12,14 +12,14 @@ class GameTest {
 	fun `creates game with correct number of players`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
 		
-		assertThat(game.players).hasSize(2)
+		assertThat(game.players()).hasSize(2)
 	}
 	
 	@Test
 	fun `each player has 14 tiles after creation`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
 		
-		for (player in game.players) {
+		for (player in game.players()) {
 			assertThat(player.rack()).hasSize(14)
 		}
 	}
@@ -44,7 +44,7 @@ class GameTest {
 	fun `player names are preserved`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
 		
-		val names = game.players.map { it.name() }.toSet()
+		val names = game.players().map { it.name() }.toSet()
 		assertThat(names).isEqualTo(twoPlayerNames)
 	}
 	
@@ -54,7 +54,7 @@ class GameTest {
 		
 		val next = game.nextPlayer()
 		
-		assertThat(next).isEqualTo(game.players[1])
+		assertThat(next).isEqualTo(game.players()[1])
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ class GameTest {
 		game.nextPlayer()
 		val wrapped = game.nextPlayer()
 		
-		assertThat(wrapped).isEqualTo(game.players.first())
+		assertThat(wrapped).isEqualTo(game.players().first())
 	}
 	
 	@Test

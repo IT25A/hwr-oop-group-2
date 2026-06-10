@@ -1,13 +1,16 @@
 package hwr.oop.grp02.rummikub_2026.core
 
+import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.DrawPile
+import kotlin.collections.plus
 
 class Game private constructor(
 	internal val drawPile: DrawPile,
-	internal val players: List<Player>,
+	private var players: List<Player>,
 	private var board: Board = Board(),
 ) {
 	private var currentPlayerIndex: Int = 0
+	private var movePossible = false
 	
 	companion object {
 		fun withShuffledDrawPile(playerNames: Set<String>): Game {
@@ -31,6 +34,41 @@ class Game private constructor(
 		}
 	}
 	
+	fun makeMove(player: Player, laidTiles: List<Tile>, newBoard: Board): Player {
+		val playerIndex = playerIndex(player)
+		
+		if (!player.rack().containsAll(laidTiles)) throw TODO("TileNotFoundException?")
+		
+		if (!newBoard.validate()) throw TODO("Board invalid")
+		
+		val newPlayer = player.removeAll(tile = laidTiles.toTypedArray())
+		
+		players = replacePlayer(playerIndex, newPlayer)
+		board = newBoard
+		return newPlayer
+	}
+	
+	fun drawCard(player: Player): Player {
+		val playerIndex = playerIndex(player)
+		val card = drawPile.draw()
+		val newPlayer = player.add(card)
+		players = replacePlayer(playerIndex, newPlayer)
+		return newPlayer
+	}
+	
+	private fun playerIndex(player: Player): Int {
+		if (!movePossible) throw TODO("Move not possible -> nextPlayer()")
+		
+		val playerIndex = players.indexOf(player)
+		if (playerIndex == -1) throw PlayerNotFoundException(player.name())
+		if (playerIndex != currentPlayerIndex) throw TODO("Player not allowed to make move")
+		return playerIndex
+	}
+	
+	internal fun replacePlayer(index: Int, player: Player): List<Player> {
+		return players.slice(0 until index) + players + players.slice(index + 1 until players.size)
+	}
+	
 	fun board(): Board = board
 	
 	fun currentPlayer(): Player = players[currentPlayerIndex]
@@ -39,4 +77,6 @@ class Game private constructor(
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size
 		return currentPlayer()
 	}
+	
+	fun players(): List<Player> = players.toList()
 }
