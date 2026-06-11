@@ -10,7 +10,6 @@ class Game private constructor(
 	private var board: Board = Board(),
 ) {
 	private var currentPlayerIndex: Int = 0
-	private var movePossible = false
 	
 	companion object {
 		fun withShuffledDrawPile(playerNames: Set<String>): Game {
@@ -30,22 +29,26 @@ class Game private constructor(
 				Player(it, List(14) { drawPile.draw() }.toMutableList())
 			}
 			
-			return Game(drawPile, players, Board())
+			return Game(drawPile, players)
 		}
 	}
 	
-	fun makeMove(player: Player, laidTiles: List<Tile>, newBoard: Board): Player {
+	data class MoveResponse(val newPlayer: Player, val nextPlayer: Player?, val hasWon: Boolean)
+	
+	fun makeMove(player: Player, laidTiles: List<Tile>, newBoard: Board): MoveResponse {
 		val playerIndex = playerIndex(player)
 		
-		if (!player.rack().containsAll(laidTiles)) throw TODO("TileNotFoundException?")
-		
-		if (!newBoard.validate()) throw TODO("Board invalid")
+		require(laidTiles.isNotEmpty()) { "Player didn’t lay out any tiles" }
+		require(!newBoard.validate()) { "Provided board is invalid" }
+		require(newBoard.subtractTiles(board.tiles() + laidTiles).isEmpty()) { "Provided board does contain tiles which aren’t present in the old board" }
 		
 		val newPlayer = player.removeAll(tile = laidTiles.toTypedArray())
 		
 		players = replacePlayer(playerIndex, newPlayer)
 		board = newBoard
-		return newPlayer
+		
+		if (newPlayer.rack().isEmpty()) return MoveResponse(newPlayer, hasWon = true, nextPlayer = null)
+		return MoveResponse(newPlayer, nextPlayer(), hasWon = false)
 	}
 	
 	fun drawCard(player: Player): Player {
@@ -53,12 +56,11 @@ class Game private constructor(
 		val card = drawPile.draw()
 		val newPlayer = player.add(card)
 		players = replacePlayer(playerIndex, newPlayer)
+		nextPlayer()
 		return newPlayer
 	}
 	
 	private fun playerIndex(player: Player): Int {
-		if (!movePossible) throw TODO("Move not possible -> nextPlayer()")
-		
 		val playerIndex = players.indexOf(player)
 		if (playerIndex == -1) throw PlayerNotFoundException(player.name())
 		if (playerIndex != currentPlayerIndex) throw TODO("Player not allowed to make move")
@@ -66,17 +68,19 @@ class Game private constructor(
 	}
 	
 	internal fun replacePlayer(index: Int, player: Player): List<Player> {
-		return players.slice(0 until index) + players + players.slice(index + 1 until players.size)
+		return players.slice(0 until index) + player + players.slice(index + 1 until players.size)
 	}
 	
 	fun board(): Board = board
 	
 	fun currentPlayer(): Player = players[currentPlayerIndex]
 	
-	fun nextPlayer(): Player {
+	internal fun nextPlayer(): Player {
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size
 		return currentPlayer()
 	}
 	
 	fun players(): List<Player> = players.toList()
+	
+	
 }

@@ -19,6 +19,8 @@ data class Group(private val type: GroupType, private val tiles: List<Tile> = li
 		}
 	}
 	
+	fun tiles() = tiles.toList()
+	
 	private fun validSameColor(): Boolean {
 		for (tile in tiles) {
 			if (tile.color() != tiles.first().color()) {

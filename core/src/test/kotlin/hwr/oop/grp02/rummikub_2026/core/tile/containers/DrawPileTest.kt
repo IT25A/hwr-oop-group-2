@@ -1,6 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
-import hwr.oop.grp02.rummikub_2026.core.NoSuchTileException
+import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber

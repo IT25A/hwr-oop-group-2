@@ -1,5 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core
 
+import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
 data class Player(private val name: String, private val tiles: List<Tile> = listOf()) {
@@ -21,7 +22,8 @@ data class Player(private val name: String, private val tiles: List<Tile> = list
 	
 	fun removeAll(vararg tile: Tile): Player {
 		val original = tiles.toMutableList()
-		if (!original.removeAll(tile.toList())) throw NoSuchTileException()
+		if (!original.containsAll(tile.toList())) throw NoSuchTileException()
+		original.removeAll(tile.toList())
 		return copy(tiles = original.toList())
 	}
 }

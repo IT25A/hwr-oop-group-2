@@ -37,7 +37,7 @@ class GameTest {
 	fun `board is empty at start`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
 		
-		assertThat(game.board().rows()).isEmpty()
+		assertThat(game.board().groups()).isEmpty()
 	}
 	
 	@Test
@@ -89,4 +89,18 @@ class GameTest {
 		assertThat(unShuffledGame.drawPile.tiles()).hasSameSizeAs(shuffledGame.drawPile.tiles())
 		assertThat(unShuffledGame.drawPile.tiles()).isNotEqualTo(shuffledGame.drawPile.tiles())
 	}
+	
+	@Test
+	fun `Player can move only with correct playerIndex`() {
+		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		
+		val currentPlayer = game.currentPlayer()
+		assertThat(currentPlayer).isEqualTo(game.players()[0])
+		
+		game.nextPlayer()
+		val nextPlayer = game.currentPlayer()
+		assertThat(nextPlayer).isEqualTo(game.players()[1])
+		assertThat(nextPlayer).isNotEqualTo(currentPlayer)
+	}
 }
+
