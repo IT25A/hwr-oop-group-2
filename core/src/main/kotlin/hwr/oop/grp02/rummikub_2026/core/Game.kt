@@ -36,39 +36,39 @@ class Game private constructor(
 	data class MoveResponse(val newPlayer: Player, val nextPlayer: Player?, val hasWon: Boolean)
 	
 	fun makeMove(player: Player, laidTiles: List<Tile>, newBoard: Board): MoveResponse {
-		val playerIndex = playerIndex(player)
+		requireValidPlayer(player)
 		
 		require(laidTiles.isNotEmpty()) { "Player didn’t lay out any tiles" }
-		require(!newBoard.validate()) { "Provided board is invalid" }
-		require(newBoard.subtractTiles(board.tiles() + laidTiles).isEmpty()) { "Provided board does contain tiles which aren’t present in the old board" }
+		require(newBoard.validate()) { "Provided board is invalid" }
+		require(
+			newBoard.subtractTiles(board.tiles() + laidTiles).isEmpty()
+		) { "Provided board does contain tiles which aren’t present in the old board" }
 		
 		val newPlayer = player.removeAll(tile = laidTiles.toTypedArray())
 		
-		players = replacePlayer(playerIndex, newPlayer)
+		players = replacePlayer(currentPlayerIndex, newPlayer)
 		board = newBoard
 		
 		if (newPlayer.rack().isEmpty()) return MoveResponse(newPlayer, hasWon = true, nextPlayer = null)
 		return MoveResponse(newPlayer, nextPlayer(), hasWon = false)
 	}
 	
-	fun drawCard(player: Player): Player {
-		val playerIndex = playerIndex(player)
-		val card = drawPile.draw()
-		val newPlayer = player.add(card)
-		players = replacePlayer(playerIndex, newPlayer)
-		nextPlayer()
-		return newPlayer
-	}
+	data class DrawResponse(val newPlayer: Player, val nextPlayer: Player, val tile: Tile)
 	
-	private fun playerIndex(player: Player): Int {
-		val playerIndex = players.indexOf(player)
-		if (playerIndex == -1) throw PlayerNotFoundException(player.name())
-		if (playerIndex != currentPlayerIndex) throw TODO("Player not allowed to make move")
-		return playerIndex
+	fun drawTile(player: Player): DrawResponse {
+		requireValidPlayer(player)
+		val tile = drawPile.draw()
+		val newPlayer = player.add(tile)
+		players = replacePlayer(currentPlayerIndex, newPlayer)
+		return DrawResponse(newPlayer, nextPlayer(), tile)
 	}
 	
 	internal fun replacePlayer(index: Int, player: Player): List<Player> {
 		return players.slice(0 until index) + player + players.slice(index + 1 until players.size)
+	}
+	
+	private fun requireValidPlayer(player: Player) {
+		if (players[currentPlayerIndex] != player) throw PlayerNotAllowedException(player.name())
 	}
 	
 	fun board(): Board = board
@@ -81,6 +81,5 @@ class Game private constructor(
 	}
 	
 	fun players(): List<Player> = players.toList()
-	
 	
 }

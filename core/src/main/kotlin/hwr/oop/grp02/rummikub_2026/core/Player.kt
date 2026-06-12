@@ -23,7 +23,7 @@ data class Player(private val name: String, private val tiles: List<Tile> = list
 	fun removeAll(vararg tile: Tile): Player {
 		val original = tiles.toMutableList()
 		if (!original.containsAll(tile.toList())) throw NoSuchTileException()
-		original.removeAll(tile.toList())
+		tile.toList().forEach { original.remove(it) }
 		return copy(tiles = original.toList())
 	}
 }

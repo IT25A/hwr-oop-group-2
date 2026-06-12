@@ -1,5 +1,10 @@
 package hwr.oop.grp02.rummikub_2026.core
 
+import hwr.oop.grp02.rummikub_2026.core.tile.Tile
+import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
+import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
+import hwr.oop.grp02.rummikub_2026.core.tile.containers.Group
+import hwr.oop.grp02.rummikub_2026.core.tile.containers.GroupType
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
@@ -7,6 +12,16 @@ import org.junit.jupiter.api.Test
 class GameTest {
 	
 	private val twoPlayerNames = setOf("Alice", "Bob")
+	
+	val blueOne = Tile(TileNumber.One, TileColor.Blue)
+	val blueTwo = Tile(TileNumber.Two, TileColor.Blue)
+	val blueThree = Tile(TileNumber.Three, TileColor.Blue)
+	
+	val redOne = Tile(TileNumber.One, TileColor.Red)
+	val redTwo = Tile(TileNumber.Two, TileColor.Red)
+	val redThree = Tile(TileNumber.Three, TileColor.Red)
+	
+	private val groupedTiles = listOf(blueOne,blueTwo,blueThree)
 	
 	@Test
 	fun `creates game with correct number of players`() {
@@ -91,6 +106,40 @@ class GameTest {
 	}
 	
 	@Test
+	fun `Exception is thrown if laidTest is Empty`(){
+		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val laid  = emptyList<Tile>()
+		assertThatThrownBy {
+			game.makeMove(game.players()[0], laid, Board())
+		}.isInstanceOf(IllegalArgumentException::class.java)
+			.hasMessage("Player didn’t lay out any tiles")
+	}
+	
+	@Test
+	fun `Exception is thrown if newBoard is not validated`(){
+		val game =  Game.withUnShuffledDrawPile(twoPlayerNames)
+		val testBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, listOf(blueOne,blueTwo))))
+		assertThatThrownBy {
+			game.makeMove(game.players()[0], groupedTiles, testBoard)
+		}.isInstanceOf(IllegalArgumentException::class.java)
+			.hasMessage("Provided board is invalid")
+	}
+	
+	@Test
+	fun `Exception is thrown if newBoard contains unexpected tiles`(){
+		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val unexpectedTile = Tile(TileNumber.Four, TileColor.Blue)
+		val testBoard = Board(listOf(
+			Group(GroupType.DiffNumberSameColor, groupedTiles + unexpectedTile)
+		))
+		
+		assertThatThrownBy {
+			game.makeMove(game.players()[0], groupedTiles, testBoard)
+		}.isInstanceOf(IllegalArgumentException::class.java)
+			.hasMessage("Provided board does contain tiles which aren’t present in the old board")
+	}
+	
+	@Test
 	fun `Player can move only with correct playerIndex`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
 		
@@ -101,6 +150,154 @@ class GameTest {
 		val nextPlayer = game.currentPlayer()
 		assertThat(nextPlayer).isEqualTo(game.players()[1])
 		assertThat(nextPlayer).isNotEqualTo(currentPlayer)
+	}
+	
+	@Test
+	fun `draw removes a card from the draw pile and adds that card to player`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val oldDrawPileSize = game.drawPile.tiles().size
+		val oldPlayer = game.currentPlayer()
+		val drawResponse = game.drawTile(oldPlayer)
+		assertThat(oldPlayer.rack().size).isEqualTo(drawResponse.newPlayer.rack().size - 1)
+		assertThat(drawResponse.newPlayer.rack()).contains(drawResponse.tile)
+		assertThat(game.drawPile.tiles().size).isEqualTo(oldDrawPileSize - 1)
+	}
+	
+	@Test
+	fun `player index returns new player after tile was drawn`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val oldPlayer = game.currentPlayer()
+		val drawResponse = game.drawTile(game.currentPlayer())
+		assertThat(drawResponse.newPlayer.name()).isEqualTo(oldPlayer.name())
+		assertThat(drawResponse.nextPlayer.name()).isEqualTo(game.currentPlayer().name())
+		assertThat(game.currentPlayer().name()).isNotEqualTo(oldPlayer.name())
+	}
+	
+	@Test
+	fun `drawing with wrong player throws exception`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val wrongPlayer = game.players()[1]
+		assertThatThrownBy {
+			game.drawTile(wrongPlayer)
+		}.isInstanceOf(PlayerNotAllowedException::class.java)
+	}
+	
+	@Test
+	fun `rMika_ModifiedeplacePlayer replaces player at index 0`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val oldPlayers = game.players()
+		val newPlayer = Player("Tillmann_Modified", mutableListOf())
+		
+		val updatedPlayers = game.replacePlayer(0, newPlayer)
+		
+		assertThat(updatedPlayers).hasSize(2)
+		assertThat(updatedPlayers[0]).isEqualTo(newPlayer)
+		assertThat(updatedPlayers[1]).isEqualTo(oldPlayers[1])
+	}
+	
+	@Test
+	fun `replacePlayer preserves all other players`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika", "Anes"))
+		val oldPlayers = game.players()
+		val newPlayer = Player("Mika_Modified", mutableListOf())
+		
+		val updatedPlayers = game.replacePlayer(1, newPlayer)
+		
+		assertThat(updatedPlayers).hasSize(3)
+		assertThat(updatedPlayers[0]).isEqualTo(oldPlayers[0])
+		assertThat(updatedPlayers[1]).isEqualTo(newPlayer)
+		assertThat(updatedPlayers[2]).isEqualTo(oldPlayers[2])
+	}
+	
+	@Test
+	fun `replacePlayer returns new list instance`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val oldPlayers = game.players()
+		val newPlayer = Player("Tillmann", mutableListOf())
+		
+		val updatedPlayers = game.replacePlayer(0, newPlayer)
+		
+		assertThat(updatedPlayers).isNotSameAs(oldPlayers)
+	}
+	
+	@Test
+	fun `emptyRack leads to winning game and checks if rack is truly emptied`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika", "Stefan"))
+		
+		val player3 = game.players()[2]
+		
+		// we need player 3 to be our current player to make a move
+		game.drawTile(game.currentPlayer())
+		game.drawTile(game.currentPlayer())
+		
+		// B3 - B13
+		val run1 = Group(GroupType.DiffNumberSameColor, listOf(
+			Tile(TileNumber.Three, TileColor.Blue),
+			Tile(TileNumber.Four, TileColor.Blue),
+			Tile(TileNumber.Five, TileColor.Blue),
+			Tile(TileNumber.Six, TileColor.Blue),
+			Tile(TileNumber.Seven, TileColor.Blue),
+			Tile(TileNumber.Eight, TileColor.Blue),
+			Tile(TileNumber.Nine, TileColor.Blue),
+			Tile(TileNumber.Ten, TileColor.Blue),
+			Tile(TileNumber.Eleven, TileColor.Blue),
+			Tile(TileNumber.Twelve, TileColor.Blue),
+			Tile(TileNumber.Thirteen, TileColor.Blue),
+		))
+		
+		// O1 - O3
+		val run2 = Group(GroupType.DiffNumberSameColor, listOf(
+			Tile(TileNumber.One, TileColor.Orange),
+			Tile(TileNumber.Two, TileColor.Orange),
+			Tile(TileNumber.Three, TileColor.Orange),
+		))
+		
+		val newBoard = Board(listOf(run1, run2))
+		
+		val testResponse = game.makeMove(player3, player3.rack(), newBoard)
+		
+		assertThat(testResponse.hasWon).isTrue
+		assertThat(testResponse.newPlayer.rack()).isEmpty()
+		assertThat(testResponse.nextPlayer).isNull()
+	}
+	
+	@Test
+	fun `laying tiles removes them from playerRack`(){
+		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val laidTiles = listOf(redOne, redTwo, redThree)
+		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
+		val moveResponse = game.makeMove(game.currentPlayer(), laidTiles, newBoard)
+		assertThat(moveResponse.newPlayer.rack()).doesNotContain(redOne, redTwo, redThree)
+		assertThat(moveResponse.hasWon).isFalse
+		assertThat(moveResponse.nextPlayer).isNotNull
+		assertThat(moveResponse.nextPlayer).isEqualTo(game.currentPlayer())
+		assertThat(moveResponse.nextPlayer!!.name()).isNotEqualTo(moveResponse.newPlayer.name())
+	}
+	
+	@Test
+	fun `illegal player cannot make move`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val illegalPlayer = Player("Gandalf")
+		val laidTiles = listOf(redOne, redTwo, redThree)
+		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
+		assertThatThrownBy {
+			game.makeMove(illegalPlayer, laidTiles, newBoard)
+		}.isInstanceOf(PlayerNotAllowedException::class.java)
+	}
+	
+	@Test
+	fun `player does not win if rack has tiles left`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		
+		val player0 = game.players()[0]
+		val playSet = player0.rack().take(3).sortedBy { it.number().value() }
+		
+		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, playSet)))
+		
+		val testResponse: Game.MoveResponse = game.makeMove(player0, playSet, newBoard)
+		
+		assertThat(testResponse.hasWon).isFalse
+		assertThat(testResponse.newPlayer.rack()).hasSize(11)  // 14 - 3
 	}
 }
 
