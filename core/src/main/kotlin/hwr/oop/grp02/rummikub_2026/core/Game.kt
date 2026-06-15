@@ -2,31 +2,30 @@ package hwr.oop.grp02.rummikub_2026.core
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.DrawPile
-import kotlin.collections.plus
 
 class Game private constructor(
 	internal val drawPile: DrawPile,
 	private var players: List<Player>,
-	private var board: Board = Board(),
+	private var board: Board = Board()
 ) {
 	private var currentPlayerIndex: Int = 0
 	
 	companion object {
-		fun withShuffledDrawPile(playerNames: Set<String>): Game {
+		fun withShuffledDrawPile(playerNames: Set<String>, withInitialMeld: Boolean = false): Game {
 			val drawPile = DrawPile.withAllTiles()
 			drawPile.shuffle()
-			return withPlayers(playerNames, drawPile)
+			return withPlayers(playerNames, drawPile, withInitialMeld)
 		}
 		
-		fun withUnShuffledDrawPile(playerNames: Set<String>): Game {
-			return withPlayers(playerNames, DrawPile.withAllTiles())
+		fun withUnShuffledDrawPile(playerNames: Set<String>, withInitialMeld: Boolean = false): Game {
+			return withPlayers(playerNames, DrawPile.withAllTiles(), withInitialMeld)
 		}
 		
-		private fun withPlayers(playerNames: Set<String>, drawPile: DrawPile): Game {
+		private fun withPlayers(playerNames: Set<String>, drawPile: DrawPile, withInitialMeld: Boolean = false): Game {
 			require(playerNames.size in 2..4) { "Rummikub requires 2 to 4 players" }
 			
 			val players = playerNames.map {
-				Player(it, List(14) { drawPile.draw() }.toMutableList())
+				Player(it, List(14) { drawPile.draw() }.toMutableList(), withInitialMeld)
 			}
 			
 			return Game(drawPile, players)
@@ -39,14 +38,18 @@ class Game private constructor(
 		requireValidPlayer(player)
 		
 		require(laidTiles.isNotEmpty()) { "Player didn’t lay out any tiles" }
+		
+		requireInitialMeld(player, laidTiles, newBoard)
+		
 		require(newBoard.validate()) { "Provided board is invalid" }
+		
 		require(
 			newBoard.subtractTiles(board.tiles() + laidTiles).isEmpty()
 		) { "Provided board does contain tiles which aren’t present in the old board" }
 		
 		val newPlayer = player.removeAll(tile = laidTiles.toTypedArray())
 		
-		players = replacePlayer(currentPlayerIndex, newPlayer)
+		players = replacePlayer(currentPlayerIndex, newPlayer.copy(initialMeld = true))
 		board = newBoard
 		
 		if (newPlayer.rack().isEmpty()) return MoveResponse(newPlayer, hasWon = true, nextPlayer = null)
@@ -69,6 +72,20 @@ class Game private constructor(
 	
 	private fun requireValidPlayer(player: Player) {
 		if (players[currentPlayerIndex] != player) throw PlayerNotAllowedException(player.name())
+	}
+	
+	private fun requireInitialMeld(player: Player, laidTiles: List<Tile>, newBoard: Board) {
+		if (player.initMeld()) return
+		
+		val newGroups = newBoard.groups().toMutableList()
+		board.groups().forEach { newGroups.remove(it) }
+		val boardNotModified = newGroups.flatMap { it.tiles() } == laidTiles
+		
+		val enoughPoints = laidTiles.sumOf { it.number().value() } >= 30
+		
+		if (boardNotModified && enoughPoints) return
+		
+		throw IllegalFirstMoveException(player.name())
 	}
 	
 	fun board(): Board = board

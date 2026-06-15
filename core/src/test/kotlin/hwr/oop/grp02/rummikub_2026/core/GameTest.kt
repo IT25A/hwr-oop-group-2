@@ -21,6 +21,15 @@ class GameTest {
 	val redTwo = Tile(TileNumber.Two, TileColor.Red)
 	val redThree = Tile(TileNumber.Three, TileColor.Red)
 	
+	val redSeven = Tile(TileNumber.Seven, TileColor.Red)
+	val redEight = Tile(TileNumber.Eight, TileColor.Red)
+	val redNine = Tile(TileNumber.Nine, TileColor.Red)
+	val redTen = Tile(TileNumber.Ten, TileColor.Red)
+	val redEleven = Tile(TileNumber.Eleven, TileColor.Red)
+	val redTwelve = Tile(TileNumber.Twelve, TileColor.Red)
+	val redThirteen = Tile(TileNumber.Thirteen, TileColor.Red)
+
+	
 	private val groupedTiles = listOf(blueOne,blueTwo,blueThree)
 	
 	@Test
@@ -117,7 +126,7 @@ class GameTest {
 	
 	@Test
 	fun `Exception is thrown if newBoard is not validated`(){
-		val game =  Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game =  Game.withUnShuffledDrawPile(twoPlayerNames, true)
 		val testBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, listOf(blueOne,blueTwo))))
 		assertThatThrownBy {
 			game.makeMove(game.players()[0], groupedTiles, testBoard)
@@ -127,7 +136,7 @@ class GameTest {
 	
 	@Test
 	fun `Exception is thrown if newBoard contains unexpected tiles`(){
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
 		val unexpectedTile = Tile(TileNumber.Four, TileColor.Blue)
 		val testBoard = Board(listOf(
 			Group(GroupType.DiffNumberSameColor, groupedTiles + unexpectedTile)
@@ -183,7 +192,7 @@ class GameTest {
 	}
 	
 	@Test
-	fun `rMika_ModifiedeplacePlayer replaces player at index 0`() {
+	fun `Player replaces player at index 0`() {
 		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
 		val oldPlayers = game.players()
 		val newPlayer = Player("Tillmann_Modified", mutableListOf())
@@ -263,7 +272,7 @@ class GameTest {
 	
 	@Test
 	fun `laying tiles removes them from playerRack`(){
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
 		val laidTiles = listOf(redOne, redTwo, redThree)
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
 		val moveResponse = game.makeMove(game.currentPlayer(), laidTiles, newBoard)
@@ -282,12 +291,12 @@ class GameTest {
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
 		assertThatThrownBy {
 			game.makeMove(illegalPlayer, laidTiles, newBoard)
-		}.isInstanceOf(PlayerNotAllowedException::class.java)
+		}.isInstanceOf(PlayerNotAllowedException::class.java).hasMessage("The provided player ${illegalPlayer.name()} is not allowed to play")
 	}
 	
 	@Test
 	fun `player does not win if rack has tiles left`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"), true)
 		
 		val player0 = game.players()[0]
 		val playSet = player0.rack().take(3).sortedBy { it.number().value() }
@@ -297,7 +306,34 @@ class GameTest {
 		val testResponse: Game.MoveResponse = game.makeMove(player0, playSet, newBoard)
 		
 		assertThat(testResponse.hasWon).isFalse
-		assertThat(testResponse.newPlayer.rack()).hasSize(11)  // 14 - 3
+		assertThat(testResponse.newPlayer.rack()).hasSize(11)
+	}
+	
+	@Test
+	fun `initial meld under 30 points fails`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val laidTiles = listOf(redOne, redTwo, redThree)
+		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
+		assertThatThrownBy {
+			game.makeMove(game.currentPlayer(), laidTiles, newBoard)
+		}.isInstanceOf(IllegalFirstMoveException::class.java).hasMessage("Player ${game.currentPlayer().name()}’s first move is not valid (30 points, board not modified)")
+	}
+	
+	@Test
+	fun `initial meld over 30 points succeeds`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val laidTiles = listOf(redEleven, redTwelve, redThirteen)
+		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
+		val moveResponse = game.makeMove(game.currentPlayer(), laidTiles, newBoard)
+		assertThat(moveResponse.newPlayer.rack()).doesNotContain(redEleven, redTwelve, redThirteen)
+	}
+	
+	@Test
+	fun `initial meld with manipulated board fails`() {
+		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val board = Board(listOf(Group(GroupType.DiffNumberSameColor,listOf(redEleven, redTwelve, redThirteen))))
+		val laidTiles = listOf(redSeven, redEight, redNine, redTen)
+		assertThatThrownBy { game.makeMove(game.currentPlayer(), laidTiles, board) }.isInstanceOf(IllegalFirstMoveException::class.java)
 	}
 }
 

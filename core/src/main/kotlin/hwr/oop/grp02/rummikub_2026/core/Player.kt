@@ -3,9 +3,13 @@ package hwr.oop.grp02.rummikub_2026.core
 import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 
-data class Player(private val name: String, private val tiles: List<Tile> = listOf()) {
+data class Player(
+	private val name: String,
+	private val tiles: List<Tile> = listOf(),
+	private val initialMeld: Boolean = false,
+) {
 	fun rack() = tiles
-	
+	fun initMeld() = initialMeld
 	fun name() = name
 	
 	fun add(tile: Tile): Player {
