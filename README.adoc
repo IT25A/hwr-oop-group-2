@@ -31,19 +31,19 @@ Do not rely on it!
 ** [x] Draw pile from remaining tiles
 ** [x] Player count (2–4)
 ** [x] All players with 14 starting tiles
-** [ ] Turn Flow
+** [x] Turn Flow
 *** [x] Current player
 *** [x] Next player / turn rotation
-*** [ ] make move by providing new Board
+*** [x] make move by providing new Board
 
 * [ ] Game Rules
-** [ ] Initial meld (minimum value 30)
+** [x] Initial meld (minimum value 30)
 ** [ ] Jokers
-** [ ] Manipulate existing rows
+** [x] Manipulate existing rows
 
-* [ ] End of Game
-** [ ] Win condition (empty rack)
-** [ ] Score calculation
+* [x] End of Game
+** [x] Win condition (empty rack)
+** [x] Score calculation
 
 
 == Modulstruktur
