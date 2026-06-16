@@ -2,6 +2,7 @@ package hwr.oop.grp02.rummikub_2026.core
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.DrawPile
+import kotlin.math.abs
 
 class Game private constructor(
 	internal val drawPile: DrawPile,
@@ -60,7 +61,7 @@ class Game private constructor(
 		board = newBoard
 		
 		if (newPlayer.rack().isEmpty()) {
-			winningPlayer = newPlayer
+			winningPlayer = newPlayer.copy(points = players.sumOf { abs(it.points()) })
 			return MoveResponse(newPlayer, hasWon = true, nextPlayer = null)
 		}
 		
@@ -79,7 +80,8 @@ class Game private constructor(
 	}
 	
 	internal fun replacePlayer(index: Int, player: Player): List<Player> {
-		return players.slice(0 until index) + player + players.slice(index + 1 until players.size)
+		val list = players.slice(0 until index) + player + players.slice(index + 1 until players.size)
+		return list.map { it.copy(points = it.sum()) }
 	}
 	
 	private fun requireValidPlayer(player: Player) {

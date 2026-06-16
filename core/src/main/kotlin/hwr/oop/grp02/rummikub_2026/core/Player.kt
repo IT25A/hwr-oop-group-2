@@ -7,10 +7,12 @@ data class Player(
 	private val name: String,
 	private val tiles: List<Tile> = listOf(),
 	private val initialMeld: Boolean = false,
+	private val points: Int = 0
 ) {
 	fun rack() = tiles
 	fun initMeld() = initialMeld
 	fun name() = name
+	fun points() = points
 	
 	fun add(tile: Tile): Player {
 		val original = tiles.toMutableList()
@@ -29,5 +31,9 @@ data class Player(
 		if (!original.containsAll(tile.toList())) throw NoSuchTileException()
 		tile.toList().forEach { original.remove(it) }
 		return copy(tiles = original.toList())
+	}
+	
+	fun sum(): Int {
+		return -tiles.sumOf { it.number().value() }
 	}
 }

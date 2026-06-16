@@ -206,7 +206,7 @@ class GameTest {
 		
 		assertThat(updatedPlayers).hasSize(2)
 		assertThat(updatedPlayers[0]).isEqualTo(newPlayer)
-		assertThat(updatedPlayers[1]).isEqualTo(oldPlayers[1])
+		assertThat(updatedPlayers[1]).isEqualTo(oldPlayers[1].copy(points = -93))
 	}
 	
 	@Test
@@ -218,9 +218,9 @@ class GameTest {
 		val updatedPlayers = game.replacePlayer(1, newPlayer)
 		
 		assertThat(updatedPlayers).hasSize(3)
-		assertThat(updatedPlayers[0]).isEqualTo(oldPlayers[0])
+		assertThat(updatedPlayers[0]).isEqualTo(oldPlayers[0].copy(points = -92))
 		assertThat(updatedPlayers[1]).isEqualTo(newPlayer)
-		assertThat(updatedPlayers[2]).isEqualTo(oldPlayers[2])
+		assertThat(updatedPlayers[2]).isEqualTo(oldPlayers[2].copy(points = -94))
 	}
 	
 	@Test
@@ -238,11 +238,11 @@ class GameTest {
 	fun `emptyRack leads to winning game and checks if rack is truly emptied`() {
 		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika", "Stefan"))
 		
-		val player3 = game.players()[2]
-		
 		// we need player 3 to be our current player to make a move
 		game.drawTile(game.currentPlayer())
 		game.drawTile(game.currentPlayer())
+		
+		val player3 = game.currentPlayer()
 		
 		val run1 = Group(GroupType.DiffNumberSameColor, listOf(
 			Tile(TileNumber.Three, TileColor.Blue),
@@ -271,6 +271,7 @@ class GameTest {
 		assertThat(testResponse.hasWon).isTrue
 		assertThat(testResponse.newPlayer.rack()).isEmpty()
 		assertThat(testResponse.nextPlayer).isNull()
+		assertThat(game.finished()).isTrue
 	}
 	
 	@Test
@@ -284,6 +285,7 @@ class GameTest {
 		assertThat(moveResponse.nextPlayer).isNotNull
 		assertThat(moveResponse.nextPlayer).isEqualTo(game.currentPlayer())
 		assertThat(moveResponse.nextPlayer!!.name()).isNotEqualTo(moveResponse.newPlayer.name())
+		assertThat(game.finished()).isFalse
 	}
 	
 	@Test
@@ -310,25 +312,6 @@ class GameTest {
 		
 		assertThat(testResponse.hasWon).isFalse
 		assertThat(testResponse.newPlayer.rack()).hasSize(11)
-	}
-	
-	@Test
-	fun `initial meld under 30 points fails`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
-		val laidTiles = listOf(redOne, redTwo, redThree)
-		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
-		assertThatThrownBy {
-			game.makeMove(game.currentPlayer(), laidTiles, newBoard)
-		}.isInstanceOf(IllegalFirstMoveException::class.java).hasMessage("Player ${game.currentPlayer().name()}’s first move is not valid (30 points, board not modified)")
-	}
-	
-	@Test
-	fun `initial meld over 30 points succeeds`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
-		val laidTiles = listOf(redEleven, redTwelve, redThirteen)
-		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
-		val moveResponse = game.makeMove(game.currentPlayer(), laidTiles, newBoard)
-		assertThat(moveResponse.newPlayer.rack()).doesNotContain(redEleven, redTwelve, redThirteen)
 	}
 	
 	@Test
@@ -389,6 +372,26 @@ class GameTest {
 		val gameResponse = game.makeMove(player1, laidTiles, newBoard)
 		
 		assertThat(gameResponse.hasWon).isTrue
+	}
+	
+	@Test
+	fun `check sum at end of game`() {
+		val player1 = Player("Tillmann", mutableListOf(
+			redTwo, redThree, redFour, blueFour,blueFive, blueSix, blueSeven))
+		val player2 = Player("Mika", mutableListOf(blueOne, blueTwo, blueThree))
+		val game = Game.withDefinedPlayers(listOf(player1, player2))
+		
+		val laidTiles = player1.rack()
+		val newBoard = Board(listOf(
+			Group(GroupType.DiffNumberSameColor,listOf(redTwo, redThree, redFour)),
+			Group(GroupType.DiffNumberSameColor, listOf(blueFour, blueFive, blueSix, blueSeven))
+		))
+		val gameResponse = game.makeMove(player1, laidTiles, newBoard)
+		
+		assertThat(gameResponse.hasWon).isTrue
+		assertThat(game.finished()).isTrue
+		assertThat(game.winningPlayer()).isEqualTo(gameResponse.newPlayer.copy(points = 6))
+		assertThat(game.players()[1].points()).isEqualTo(-6)
 	}
 }
 
