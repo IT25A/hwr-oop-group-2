@@ -21,6 +21,10 @@ class Game private constructor(
 			return withPlayers(playerNames, DrawPile.withAllTiles(), withInitialMeld)
 		}
 		
+		internal fun withDefinedPlayers(players: List<Player>): Game {
+			return Game(DrawPile.withAllTiles(), players)
+		}
+		
 		private fun withPlayers(playerNames: Set<String>, drawPile: DrawPile, withInitialMeld: Boolean = false): Game {
 			require(playerNames.size in 2..4) { "Rummikub requires 2 to 4 players" }
 			
