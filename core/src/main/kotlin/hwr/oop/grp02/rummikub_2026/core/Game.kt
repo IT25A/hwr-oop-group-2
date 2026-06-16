@@ -9,6 +9,7 @@ class Game private constructor(
 	private var board: Board = Board()
 ) {
 	private var currentPlayerIndex: Int = 0
+	private var winningPlayer: Player? = null;
 	
 	companion object {
 		fun withShuffledDrawPile(playerNames: Set<String>, withInitialMeld: Boolean = false): Game {
@@ -39,6 +40,8 @@ class Game private constructor(
 	data class MoveResponse(val newPlayer: Player, val nextPlayer: Player?, val hasWon: Boolean)
 	
 	fun makeMove(player: Player, laidTiles: List<Tile>, newBoard: Board): MoveResponse {
+		require(winningPlayer == null) { "Game has finished (one player has won)" }
+		
 		requireValidPlayer(player)
 		
 		require(laidTiles.isNotEmpty()) { "Player didn’t lay out any tiles" }
@@ -56,13 +59,18 @@ class Game private constructor(
 		players = replacePlayer(currentPlayerIndex, newPlayer.copy(initialMeld = true))
 		board = newBoard
 		
-		if (newPlayer.rack().isEmpty()) return MoveResponse(newPlayer, hasWon = true, nextPlayer = null)
+		if (newPlayer.rack().isEmpty()) {
+			winningPlayer = newPlayer
+			return MoveResponse(newPlayer, hasWon = true, nextPlayer = null)
+		}
+		
 		return MoveResponse(newPlayer, nextPlayer(), hasWon = false)
 	}
 	
 	data class DrawResponse(val newPlayer: Player, val nextPlayer: Player, val tile: Tile)
 	
 	fun drawTile(player: Player): DrawResponse {
+		require(winningPlayer == null) { "Game has finished (one player has won)" }
 		requireValidPlayer(player)
 		val tile = drawPile.draw()
 		val newPlayer = player.add(tile)
@@ -95,6 +103,10 @@ class Game private constructor(
 	fun board(): Board = board
 	
 	fun currentPlayer(): Player = players[currentPlayerIndex]
+	
+	fun finished(): Boolean = winningPlayer != null
+	
+	fun winningPlayer(): Player? = winningPlayer
 	
 	internal fun nextPlayer(): Player {
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.size
