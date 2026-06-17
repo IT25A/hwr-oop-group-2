@@ -68,8 +68,8 @@ class BoardTest {
 	
 	@Test
 	fun `board tiles returns tiles`() {
-		val group1 = Group(GroupType.DiffNumberSameColor,listOf(blueOne, blueTwo, blueThree))
-		val group2 = Group(GroupType.SameNumberDiffColor,listOf(blueOne, orangeOne, redOne))
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree))
+		val group2 = Group(GroupType.SameNumberDiffColor, listOf(blueOne, orangeOne, redOne))
 		val board = Board(listOf(group1, group2))
 		val alltiles = board.tiles()
 		assertThat(alltiles).containsExactly(blueOne, blueTwo, blueThree, blueOne, orangeOne, redOne)
@@ -77,7 +77,7 @@ class BoardTest {
 	
 	@Test
 	fun `subtractTiles subtracts tile list`() {
-		val group1 = Group(GroupType.DiffNumberSameColor,listOf(blueOne, blueTwo, blueThree))
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree))
 		val board = Board(listOf(group1))
 		val listoftiles = listOf(blueOne, blueTwo, blueThree)
 		val alltiles = board.subtractTiles(listoftiles)
@@ -86,7 +86,7 @@ class BoardTest {
 	
 	@Test
 	fun `subtractTiles does not change during removing nothing`() {
-		val group1 = Group(GroupType.DiffNumberSameColor,listOf(blueOne, blueTwo, blueThree))
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree))
 		val board = Board(listOf(group1))
 		val listoftiles = emptyList<Tile>()
 		val alltiles = board.subtractTiles(listoftiles)
@@ -95,15 +95,15 @@ class BoardTest {
 	
 	@Test
 	fun `Throws an exception when removing non existing tile`() {
-		val group1 = Group(GroupType.DiffNumberSameColor,listOf(blueOne, blueTwo, blueThree))
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree))
 		val board = Board(listOf(group1))
-		val listoftiles = listOf<Tile>(orangeOne)
-		assertThatThrownBy{ board.subtractTiles(listoftiles) }.isInstanceOf(NoSuchTileException::class.java)
+		val listoftiles = listOf(orangeOne)
+		assertThatThrownBy { board.subtractTiles(listoftiles) }.isInstanceOf(NoSuchTileException::class.java)
 	}
 	
 	@Test
 	fun `subtractTiles recognises duplicates`() {
-		val group1 = Group(GroupType.DiffNumberSameColor,listOf(blueOne, blueOne, blueTwo, blueThree))
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueOne, blueTwo, blueThree))
 		val board = Board(listOf(group1))
 		val listoftiles = listOf(blueOne, blueTwo, blueThree)
 		val alltiles = board.subtractTiles(listoftiles)

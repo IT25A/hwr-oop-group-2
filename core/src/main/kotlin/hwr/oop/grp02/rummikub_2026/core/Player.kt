@@ -7,7 +7,7 @@ data class Player(
 	private val name: String,
 	private val tiles: List<Tile> = listOf(),
 	private val initialMeld: Boolean = false,
-	private val points: Int = 0
+	private val points: Int = 0,
 ) {
 	fun rack() = tiles
 	fun initMeld() = initialMeld

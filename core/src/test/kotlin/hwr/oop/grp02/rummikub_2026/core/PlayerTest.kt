@@ -49,7 +49,7 @@ class PlayerTest {
 	
 	@Test
 	fun `removeAll removes just the tiles it is supposed to`() {
-		val player = Player(name = "Alice", listOf(tile1, tile2, tile3, tile4), )
+		val player = Player(name = "Alice", listOf(tile1, tile2, tile3, tile4))
 		val newPlayer = player.removeAll(tile1, tile3)
 		assertThat(newPlayer.rack()).containsExactly(tile2, tile4)
 	}

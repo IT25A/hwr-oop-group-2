@@ -100,7 +100,7 @@ class GroupTest {
 	
 	@Test
 	fun `group tiles returns tiles`() {
-		val group1 = Group(GroupType.DiffNumberSameColor,listOf(blueOne, blueTwo, blueThree))
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree))
 		val alltiles = group1.tiles()
 		assertThat(alltiles).containsExactly(blueOne, blueTwo, blueThree)
 	}

@@ -7,10 +7,10 @@ import kotlin.math.abs
 class Game private constructor(
 	internal val drawPile: DrawPile,
 	private var players: List<Player>,
-	private var board: Board = Board()
+	private var board: Board = Board(),
 ) {
 	private var currentPlayerIndex: Int = 0
-	private var winningPlayer: Player? = null;
+	private var winningPlayer: Player? = null
 	
 	companion object {
 		fun withShuffledDrawPile(playerNames: Set<String>, withInitialMeld: Boolean = false): Game {

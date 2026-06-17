@@ -13,7 +13,7 @@ internal class DrawPile(private val list: MutableList<Tile> = mutableListOf()) {
 				TileNumber.entries.map { value -> Tile(value, color) }
 			}
 			
-			return DrawPile(mutableListOf(allTiles, allTiles).flatten().toMutableList());
+			return DrawPile(mutableListOf(allTiles, allTiles).flatten().toMutableList())
 		}
 	}
 	

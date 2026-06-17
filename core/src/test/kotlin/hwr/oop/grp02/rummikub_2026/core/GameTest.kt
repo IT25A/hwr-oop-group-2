@@ -16,8 +16,8 @@ class GameTest {
 	val blueOne = Tile(TileNumber.One, TileColor.Blue)
 	val blueTwo = Tile(TileNumber.Two, TileColor.Blue)
 	val blueThree = Tile(TileNumber.Three, TileColor.Blue)
-	val blueFour =Tile(TileNumber.Four, TileColor.Blue)
-	val blueFive =Tile(TileNumber.Five, TileColor.Blue)
+	val blueFour = Tile(TileNumber.Four, TileColor.Blue)
+	val blueFive = Tile(TileNumber.Five, TileColor.Blue)
 	val blueSix = Tile(TileNumber.Six, TileColor.Blue)
 	val blueSeven = Tile(TileNumber.Seven, TileColor.Blue)
 	val redOne = Tile(TileNumber.One, TileColor.Red)
@@ -33,9 +33,8 @@ class GameTest {
 	val redEleven = Tile(TileNumber.Eleven, TileColor.Red)
 	val redTwelve = Tile(TileNumber.Twelve, TileColor.Red)
 	val redThirteen = Tile(TileNumber.Thirteen, TileColor.Red)
-
 	
-	private val groupedTiles = listOf(blueOne,blueTwo,blueThree)
+	private val groupedTiles = listOf(blueOne, blueTwo, blueThree)
 	
 	@Test
 	fun `creates game with correct number of players`() {
@@ -120,9 +119,9 @@ class GameTest {
 	}
 	
 	@Test
-	fun `Exception is thrown if laidTest is Empty`(){
+	fun `Exception is thrown if laidTest is Empty`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
-		val laid  = emptyList<Tile>()
+		val laid = emptyList<Tile>()
 		assertThatThrownBy {
 			game.makeMove(game.players()[0], laid, Board())
 		}.isInstanceOf(IllegalArgumentException::class.java)
@@ -130,9 +129,9 @@ class GameTest {
 	}
 	
 	@Test
-	fun `Exception is thrown if newBoard is not validated`(){
-		val game =  Game.withUnShuffledDrawPile(twoPlayerNames, true)
-		val testBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, listOf(blueOne,blueTwo))))
+	fun `Exception is thrown if newBoard is not validated`() {
+		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
+		val testBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo))))
 		assertThatThrownBy {
 			game.makeMove(game.players()[0], groupedTiles, testBoard)
 		}.isInstanceOf(IllegalArgumentException::class.java)
@@ -140,12 +139,14 @@ class GameTest {
 	}
 	
 	@Test
-	fun `Exception is thrown if newBoard contains unexpected tiles`(){
+	fun `Exception is thrown if newBoard contains unexpected tiles`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
 		val unexpectedTile = Tile(TileNumber.Four, TileColor.Blue)
-		val testBoard = Board(listOf(
-			Group(GroupType.DiffNumberSameColor, groupedTiles + unexpectedTile)
-		))
+		val testBoard = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, groupedTiles + unexpectedTile)
+			)
+		)
 		
 		assertThatThrownBy {
 			game.makeMove(game.players()[0], groupedTiles, testBoard)
@@ -244,25 +245,29 @@ class GameTest {
 		
 		val player3 = game.currentPlayer()
 		
-		val run1 = Group(GroupType.DiffNumberSameColor, listOf(
-			Tile(TileNumber.Three, TileColor.Blue),
-			Tile(TileNumber.Four, TileColor.Blue),
-			Tile(TileNumber.Five, TileColor.Blue),
-			Tile(TileNumber.Six, TileColor.Blue),
-			Tile(TileNumber.Seven, TileColor.Blue),
-			Tile(TileNumber.Eight, TileColor.Blue),
-			Tile(TileNumber.Nine, TileColor.Blue),
-			Tile(TileNumber.Ten, TileColor.Blue),
-			Tile(TileNumber.Eleven, TileColor.Blue),
-			Tile(TileNumber.Twelve, TileColor.Blue),
-			Tile(TileNumber.Thirteen, TileColor.Blue),
-		))
+		val run1 = Group(
+			GroupType.DiffNumberSameColor, listOf(
+				Tile(TileNumber.Three, TileColor.Blue),
+				Tile(TileNumber.Four, TileColor.Blue),
+				Tile(TileNumber.Five, TileColor.Blue),
+				Tile(TileNumber.Six, TileColor.Blue),
+				Tile(TileNumber.Seven, TileColor.Blue),
+				Tile(TileNumber.Eight, TileColor.Blue),
+				Tile(TileNumber.Nine, TileColor.Blue),
+				Tile(TileNumber.Ten, TileColor.Blue),
+				Tile(TileNumber.Eleven, TileColor.Blue),
+				Tile(TileNumber.Twelve, TileColor.Blue),
+				Tile(TileNumber.Thirteen, TileColor.Blue),
+			)
+		)
 		
-		val run2 = Group(GroupType.DiffNumberSameColor, listOf(
-			Tile(TileNumber.One, TileColor.Orange),
-			Tile(TileNumber.Two, TileColor.Orange),
-			Tile(TileNumber.Three, TileColor.Orange),
-		))
+		val run2 = Group(
+			GroupType.DiffNumberSameColor, listOf(
+				Tile(TileNumber.One, TileColor.Orange),
+				Tile(TileNumber.Two, TileColor.Orange),
+				Tile(TileNumber.Three, TileColor.Orange),
+			)
+		)
 		
 		val newBoard = Board(listOf(run1, run2))
 		
@@ -275,7 +280,7 @@ class GameTest {
 	}
 	
 	@Test
-	fun `laying tiles removes them from playerRack`(){
+	fun `laying tiles removes them from playerRack`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
 		val laidTiles = listOf(redOne, redTwo, redThree)
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
@@ -296,7 +301,8 @@ class GameTest {
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
 		assertThatThrownBy {
 			game.makeMove(illegalPlayer, laidTiles, newBoard)
-		}.isInstanceOf(PlayerNotAllowedException::class.java).hasMessage("The provided player ${illegalPlayer.name()} is not allowed to play")
+		}.isInstanceOf(PlayerNotAllowedException::class.java)
+			.hasMessage("The provided player ${illegalPlayer.name()} is not allowed to play")
 	}
 	
 	@Test
@@ -317,39 +323,56 @@ class GameTest {
 	@Test
 	fun `initial meld with manipulated board fails`() {
 		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
-		val board = Board(listOf(Group(GroupType.DiffNumberSameColor,listOf(redEleven, redTwelve, redThirteen))))
+		val board = Board(listOf(Group(GroupType.DiffNumberSameColor, listOf(redEleven, redTwelve, redThirteen))))
 		val laidTiles = listOf(redSeven, redEight, redNine, redTen)
-		assertThatThrownBy { game.makeMove(game.currentPlayer(), laidTiles, board) }.isInstanceOf(IllegalFirstMoveException::class.java)
+		assertThatThrownBy {
+			game.makeMove(
+				game.currentPlayer(),
+				laidTiles,
+				board
+			)
+		}.isInstanceOf(IllegalFirstMoveException::class.java)
 	}
 	
 	@Test
 	fun `makeMove should fail when initial meld is below 30 points`() {
-		val player1 = Player("Tillmann", mutableListOf(
-			redOne, redTwo, redThree, redFour, redFive, blueTwo, blueThree, blueFour, blueFive))
+		val player1 = Player(
+			"Tillmann", mutableListOf(
+				redOne, redTwo, redThree, redFour, redFive, blueTwo, blueThree, blueFour, blueFive
+			)
+		)
 		val player2 = Player("Mika", mutableListOf(blueOne))
 		val game = Game.withDefinedPlayers(listOf(player1, player2))
 		
 		val laidTiles = player1.rack()
-		val newBoard = Board(listOf(
-			Group(GroupType.DiffNumberSameColor, listOf(redOne, redTwo, redThree, redFour, redFive)),
-			Group(GroupType.DiffNumberSameColor, listOf(blueTwo, blueThree, blueFour, blueFive)),
-		))
+		val newBoard = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, listOf(redOne, redTwo, redThree, redFour, redFive)),
+				Group(GroupType.DiffNumberSameColor, listOf(blueTwo, blueThree, blueFour, blueFive)),
+			)
+		)
 		
 		assertThatThrownBy { game.makeMove(player1, laidTiles, newBoard) }
-			.isInstanceOf(IllegalFirstMoveException::class.java).hasMessage("Player ${game.currentPlayer().name()}’s first move is not valid (30 points, board not modified)")
+			.isInstanceOf(IllegalFirstMoveException::class.java)
+			.hasMessage("Player ${game.currentPlayer().name()}’s first move is not valid (30 points, board not modified)")
 	}
 	
 	@Test
 	fun `makeMove should succeed when initial meld is exactly 30 points`() {
-		val player1 = Player("Tillmann", mutableListOf(
-			redFour, redFive, redSix, redSeven, redEight))
+		val player1 = Player(
+			"Tillmann", mutableListOf(
+				redFour, redFive, redSix, redSeven, redEight
+			)
+		)
 		val player2 = Player("Mika", mutableListOf(blueOne))
 		val game = Game.withDefinedPlayers(listOf(player1, player2))
 		
 		val laidTiles = player1.rack()
-		val newBoard = Board(listOf(
-			Group(GroupType.DiffNumberSameColor, listOf(redFour, redFive, redSix, redSeven, redEight)),
-		))
+		val newBoard = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, listOf(redFour, redFive, redSix, redSeven, redEight)),
+			)
+		)
 		
 		val gameResponse = game.makeMove(player1, laidTiles, newBoard)
 		
@@ -359,16 +382,21 @@ class GameTest {
 	
 	@Test
 	fun `makeMove should succeed when initial meld is above 30 points`() {
-		val player1 = Player("Tillmann", mutableListOf(
-			redTwo, redThree, redFour, blueFour,blueFive, blueSix, blueSeven))
+		val player1 = Player(
+			"Tillmann", mutableListOf(
+				redTwo, redThree, redFour, blueFour, blueFive, blueSix, blueSeven
+			)
+		)
 		val player2 = Player("Mika", mutableListOf(blueOne))
 		val game = Game.withDefinedPlayers(listOf(player1, player2))
 		
 		val laidTiles = player1.rack()
-		val newBoard = Board(listOf(
-			Group(GroupType.DiffNumberSameColor,listOf(redTwo, redThree, redFour)),
-			Group(GroupType.DiffNumberSameColor, listOf(blueFour, blueFive, blueSix, blueSeven))
-		))
+		val newBoard = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, redThree, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(blueFour, blueFive, blueSix, blueSeven))
+			)
+		)
 		val gameResponse = game.makeMove(player1, laidTiles, newBoard)
 		
 		assertThat(gameResponse.hasWon).isTrue
@@ -376,16 +404,21 @@ class GameTest {
 	
 	@Test
 	fun `check sum at end of game`() {
-		val player1 = Player("Tillmann", mutableListOf(
-			redTwo, redThree, redFour, blueFour,blueFive, blueSix, blueSeven))
+		val player1 = Player(
+			"Tillmann", mutableListOf(
+				redTwo, redThree, redFour, blueFour, blueFive, blueSix, blueSeven
+			)
+		)
 		val player2 = Player("Mika", mutableListOf(blueOne, blueTwo, blueThree))
 		val game = Game.withDefinedPlayers(listOf(player1, player2))
 		
 		val laidTiles = player1.rack()
-		val newBoard = Board(listOf(
-			Group(GroupType.DiffNumberSameColor,listOf(redTwo, redThree, redFour)),
-			Group(GroupType.DiffNumberSameColor, listOf(blueFour, blueFive, blueSix, blueSeven))
-		))
+		val newBoard = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, redThree, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(blueFour, blueFive, blueSix, blueSeven))
+			)
+		)
 		val gameResponse = game.makeMove(player1, laidTiles, newBoard)
 		
 		assertThat(gameResponse.hasWon).isTrue
