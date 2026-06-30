@@ -9,26 +9,28 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class Controller : GameApi, GameActionApi {
-	override fun getGame(gameId: String?): ResponseEntity<GameState> {
-		TODO("Not yet implemented")
-	}
-	
-	override fun startGame(startGameRequest: @Valid StartGameRequest?): ResponseEntity<GameCreatedResponse> {
-		TODO("Not yet implemented")
-	}
-	
-	override fun drawTile(
-		gameId: String?,
-		drawTileRequest: @Valid DrawTileRequest?,
-	): ResponseEntity<GameState>? {
-		TODO("Not yet implemented")
-	}
-	
-	override fun playTiles(
-		gameId: String?,
-		playTilesRequest: @Valid PlayTilesRequest?,
-	): ResponseEntity<GameState> {
-		TODO("Not yet implemented")
-	}
-	
+    override fun getGame(gameId: String?): ResponseEntity<GameState> {
+        TODO("Not yet implemented")
+    }
+
+    override fun startGame(startGameRequest: @Valid StartGameRequest?): ResponseEntity<GameCreatedResponse> {
+
+        return ResponseEntity.ok(GameCreatedResponse())
+        TODO("Not yet implemented")
+    }
+
+    override fun drawTile(
+        gameId: String?,
+        drawTileRequest: @Valid DrawTileRequest?,
+    ): ResponseEntity<GameState>? {
+        TODO("Not yet implemented")
+    }
+
+    override fun playTiles(
+        gameId: String?,
+        playTilesRequest: @Valid PlayTilesRequest?,
+    ): ResponseEntity<GameState> {
+        TODO("Not yet implemented")
+    }
+
 }
