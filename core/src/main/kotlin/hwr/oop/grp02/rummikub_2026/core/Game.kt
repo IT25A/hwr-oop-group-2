@@ -95,7 +95,8 @@ class Game private constructor(
 		board.groups().forEach { newGroups.remove(it) }
 		val boardNotModified = newGroups.flatMap { it.tiles() } == laidTiles
 		
-		val enoughPoints = laidTiles.sumOf { it.number().value() } >= 30
+		val enoughPoints = newGroups.sumOf { it.totalPointValue() } >= 30
+		
 		
 		if (boardNotModified && enoughPoints) return
 		

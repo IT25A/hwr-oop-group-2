@@ -1,9 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
-import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
-import hwr.oop.grp02.rummikub_2026.core.tile.Tile
-import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
-import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
+import hwr.oop.grp02.rummikub_2026.core.tile.*
 
 internal class DrawPile(private val list: MutableList<Tile> = mutableListOf()) {
 	
@@ -12,8 +9,7 @@ internal class DrawPile(private val list: MutableList<Tile> = mutableListOf()) {
 			val allTiles = TileColor.entries.flatMap { color ->
 				TileNumber.entries.map { value -> Tile(value, color) }
 			}
-			
-			return DrawPile(mutableListOf(allTiles, allTiles).flatten().toMutableList())
+			return DrawPile((allTiles + allTiles + listOf(JokerTile, JokerTile)).toMutableList())
 		}
 	}
 	

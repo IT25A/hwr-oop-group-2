@@ -17,7 +17,7 @@ class DrawPileTest {
 	
 	@Test
 	fun `drawing a tile from DrawingDeck`() {
-		val container = mutableListOf(tile1, tile2, tile3, tile4)
+		val container: MutableList<Tile> = mutableListOf(tile1, tile2, tile3, tile4)
 		val deck = DrawPile(container)
 		
 		val drawnTile = deck.draw()
@@ -33,19 +33,19 @@ class DrawPileTest {
 	}
 	
 	@Test
-	fun `withAllTiles has 104 tiles`() {
+	fun `withAllTiles has 106 tiles`() {
 		val drawPile = DrawPile.withAllTiles()
-		assertThat(drawPile.tiles()).hasSize(104)
+		assertThat(drawPile.tiles()).hasSize(106)
 	}
 	
 	@Test
-	fun `withAllTiles with distinct has 52 tiles`() {
+	fun `withAllTiles with distinct has 53 tiles`() {
 		val drawPile = DrawPile.withAllTiles()
-		assertThat(drawPile.tiles().distinct()).hasSize(52)
+		assertThat(drawPile.tiles().distinct()).hasSize(53)
 	}
 	
 	@Test
-	fun `withAllTiles has every tile twice`() {
+	fun `withAllTiles has every regular tile twice and two jokers`() {
 		val drawPile = DrawPile.withAllTiles()
 		val map = drawPile.tiles().groupBy { it }
 		assertThat(map.all { it.value.size == 2 }).isTrue

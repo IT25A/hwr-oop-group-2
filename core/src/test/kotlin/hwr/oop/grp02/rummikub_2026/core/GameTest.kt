@@ -1,5 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core
 
+import hwr.oop.grp02.rummikub_2026.core.tile.JokerTile
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
@@ -20,6 +21,7 @@ class GameTest {
 	val blueFive = Tile(TileNumber.Five, TileColor.Blue)
 	val blueSix = Tile(TileNumber.Six, TileColor.Blue)
 	val blueSeven = Tile(TileNumber.Seven, TileColor.Blue)
+	val blueEight = Tile(TileNumber.Eight, TileColor.Blue)
 	val redOne = Tile(TileNumber.One, TileColor.Red)
 	val redTwo = Tile(TileNumber.Two, TileColor.Red)
 	val redThree = Tile(TileNumber.Three, TileColor.Red)
@@ -55,7 +57,7 @@ class GameTest {
 	@Test
 	fun `drawPile has remaining tiles after dealing`() {
 		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
-		val totalTiles = 104
+		val totalTiles = 106
 		val dealtTiles = 2 * 14
 		
 		assertThat(game.drawPile.tiles()).hasSize(totalTiles - dealtTiles)
@@ -310,7 +312,7 @@ class GameTest {
 		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"), true)
 		
 		val player0 = game.players()[0]
-		val playSet = player0.rack().take(3).sortedBy { it.number().value() }
+		val playSet = player0.rack().take(3).sortedBy { it.pointValue() }
 		
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, playSet)))
 		
@@ -354,7 +356,11 @@ class GameTest {
 		
 		assertThatThrownBy { game.makeMove(player1, laidTiles, newBoard) }
 			.isInstanceOf(IllegalFirstMoveException::class.java)
-			.hasMessage("Player ${game.currentPlayer().name()}’s first move is not valid (30 points, board not modified)")
+			.hasMessage(
+				"Player ${
+					game.currentPlayer().name()
+				}’s first move is not valid (30 points, board not modified)"
+			)
 	}
 	
 	@Test
@@ -403,13 +409,35 @@ class GameTest {
 	}
 	
 	@Test
-	fun `check sum at end of game`() {
+	fun `makeMove should succeed when initial meld is above 30 points with joker`() {
+		val player1 = Player(
+			"Tillmann", mutableListOf(
+				redTwo, JokerTile, redFour, JokerTile, blueFive, blueSix, blueSeven
+			)
+		)
+		val player2 = Player("Mika", mutableListOf(blueOne))
+		val game = Game.withDefinedPlayers(listOf(player1, player2))
+		
+		val laidTiles = player1.rack()
+		val newBoard = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, JokerTile, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(JokerTile, blueFive, blueSix, blueSeven))
+			)
+		)
+		val gameResponse = game.makeMove(player1, laidTiles, newBoard)
+		
+		assertThat(gameResponse.hasWon).isTrue
+	}
+	
+	@Test
+	fun `check sum at end of game, joker included`() {
 		val player1 = Player(
 			"Tillmann", mutableListOf(
 				redTwo, redThree, redFour, blueFour, blueFive, blueSix, blueSeven
 			)
 		)
-		val player2 = Player("Mika", mutableListOf(blueOne, blueTwo, blueThree))
+		val player2 = Player("Mika", mutableListOf(blueOne, blueTwo, blueThree, JokerTile))
 		val game = Game.withDefinedPlayers(listOf(player1, player2))
 		
 		val laidTiles = player1.rack()
@@ -423,8 +451,41 @@ class GameTest {
 		
 		assertThat(gameResponse.hasWon).isTrue
 		assertThat(game.finished()).isTrue
-		assertThat(game.winningPlayer()).isEqualTo(gameResponse.newPlayer.copy(points = 6))
-		assertThat(game.players()[1].points()).isEqualTo(-6)
+		assertThat(game.winningPlayer()).isEqualTo(gameResponse.newPlayer.copy(points = 56))
+		assertThat(game.players()[1].points()).isEqualTo(-56)
+	}
+	
+	@Test
+	fun `makeMove should fail when game is over`() {
+		val player1 = Player(
+			"Tillmann", mutableListOf(
+				redTwo, JokerTile, redFour, JokerTile, blueFive, blueSix, blueSeven
+			)
+		)
+		val player2 = Player("Mika", mutableListOf(blueEight))
+		val game = Game.withDefinedPlayers(listOf(player1, player2))
+		
+		val laidTiles = player1.rack()
+		val newBoard = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, JokerTile, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(JokerTile, blueFive, blueSix, blueSeven))
+			)
+		)
+		
+		game.makeMove(player1, laidTiles, newBoard)
+		
+		val laidTiles2 = player2.rack()
+		val newBoard2 = Board(
+			listOf(
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, JokerTile, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(JokerTile, blueFive, blueSix, blueSeven, blueEight))
+			)
+		)
+		
+		assertThatThrownBy { game.makeMove(player2, laidTiles2, newBoard2) }
+			.isInstanceOf(IllegalArgumentException::class.java)
+			.hasMessageContaining("Game has finished (one player has won)")
 	}
 }
 

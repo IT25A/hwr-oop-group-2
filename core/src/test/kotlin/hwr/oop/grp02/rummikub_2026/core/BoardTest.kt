@@ -1,9 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core
 
-import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
-import hwr.oop.grp02.rummikub_2026.core.tile.Tile
-import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
-import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
+import hwr.oop.grp02.rummikub_2026.core.tile.*
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.Group
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.GroupType
 import org.assertj.core.api.Assertions.assertThat
@@ -82,6 +79,15 @@ class BoardTest {
 		val listoftiles = listOf(blueOne, blueTwo, blueThree)
 		val alltiles = board.subtractTiles(listoftiles)
 		assertThat(alltiles).isEmpty()
+	}
+	
+	@Test
+	fun `subtractTiles subtracts tiles and jokers equally`() {
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree, JokerTile))
+		val board = Board(listOf(group1))
+		val listoftiles = listOf(blueOne, JokerTile)
+		val alltiles = board.subtractTiles(listoftiles)
+		assertThat(alltiles).containsExactly(blueTwo, blueThree)
 	}
 	
 	@Test
