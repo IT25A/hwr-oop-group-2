@@ -36,9 +36,9 @@ Do not rely on it!
 *** [x] Next player / turn rotation
 *** [x] make move by providing new Board
 
-* [ ] Game Rules
+* [x] Game Rules
 ** [x] Initial meld (minimum value 30)
-** [ ] Jokers
+** [x] Jokers
 ** [x] Manipulate existing rows
 
 * [x] End of Game

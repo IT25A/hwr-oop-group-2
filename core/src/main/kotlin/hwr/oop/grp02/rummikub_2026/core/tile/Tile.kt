@@ -21,5 +21,5 @@ data class RegularTile(
 
 data object JokerTile : Tile {
     override fun isJoker(): Boolean = true
-    override fun pointValue(): Int = 25
+    override fun pointValue(): Int = 50
 }
