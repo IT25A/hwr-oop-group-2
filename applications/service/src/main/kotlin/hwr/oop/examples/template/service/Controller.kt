@@ -14,8 +14,6 @@ class Controller : GameApi, GameActionApi {
 	}
 	
 	override fun startGame(startGameRequest: @Valid StartGameRequest?): ResponseEntity<GameCreatedResponse> {
-		
-		return ResponseEntity.ok(GameCreatedResponse())
 		TODO("Not yet implemented")
 	}
 	
