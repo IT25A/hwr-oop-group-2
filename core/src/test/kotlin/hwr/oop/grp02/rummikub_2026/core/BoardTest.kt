@@ -14,6 +14,7 @@ class BoardTest {
 	
 	val redOne = Tile(TileNumber.One, TileColor.Red)
 	val orangeOne = Tile(TileNumber.One, TileColor.Orange)
+	val joker1 = JokerTile(1)
 	
 	@Test
 	fun `groups does return list`() {
@@ -83,9 +84,9 @@ class BoardTest {
 	
 	@Test
 	fun `subtractTiles subtracts tiles and jokers equally`() {
-		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree, JokerTile))
+		val group1 = Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo, blueThree, joker1))
 		val board = Board(listOf(group1))
-		val listoftiles = listOf(blueOne, JokerTile)
+		val listoftiles = listOf(blueOne, joker1)
 		val alltiles = board.subtractTiles(listoftiles)
 		assertThat(alltiles).containsExactly(blueTwo, blueThree)
 	}

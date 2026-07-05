@@ -11,6 +11,8 @@ class PlayerTest {
 	val tile2 = Tile(TileNumber.Five, TileColor.Red)
 	val tile3 = Tile(TileNumber.Four, TileColor.Orange)
 	val tile4 = Tile(TileNumber.Six, TileColor.Red)
+	val joker1  = JokerTile(1)
+	val joker2  = JokerTile(1)
 	
 	@Test
 	fun `player starts with empty tiles`() {
@@ -72,13 +74,13 @@ class PlayerTest {
 	
 	@Test
 	fun `sum returns correct value with one joker`() {
-		val player = Player(name = "Alice", listOf(tile1, JokerTile, tile4))
+		val player = Player(name = "Alice", listOf(tile1, joker1, tile4))
 		assertThat(player.sum()).isEqualTo(-57)
 	}
 	
 	@Test
 	fun `sum returns correct value with two joker`() {
-		val player = Player(name = "Alice", listOf(tile1, JokerTile, JokerTile, tile4))
+		val player = Player(name = "Alice", listOf(tile1, joker1, joker2, tile4))
 		assertThat(player.sum()).isEqualTo(-107)
 	}
 }

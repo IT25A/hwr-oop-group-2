@@ -84,12 +84,14 @@ class TilesTest {
 	
 	@Test
 	fun `joker tile isJoker returns true`() {
-		assertThat(JokerTile.isJoker()).isTrue()
+		val  joker1 = JokerTile(1)
+		assertThat(joker1.isJoker()).isTrue()
 	}
 	
 	@Test
-	fun `joker tile pointValue returns 25`() {
-		assertThat(JokerTile.pointValue()).isEqualTo(50)
+	fun `joker tile pointValue returns 50`() {
+		val  joker1 = JokerTile(1)
+		assertThat(joker1.pointValue()).isEqualTo(50)
 	}
 	
 	@Test

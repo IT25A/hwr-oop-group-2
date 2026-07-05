@@ -41,7 +41,6 @@ data class Group(private val type: GroupType, private val tiles: List<Tile> = li
 	}
 	
 	private fun validSameColor(): Boolean {
-		
 		val regularTiles = tiles.filterIsInstance<RegularTile>()
 		
 		if (regularTiles.any { it.color() != regularTiles.first().color() }) return false

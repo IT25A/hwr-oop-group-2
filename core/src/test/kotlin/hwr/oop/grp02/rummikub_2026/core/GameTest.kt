@@ -35,6 +35,8 @@ class GameTest {
 	val redEleven = Tile(TileNumber.Eleven, TileColor.Red)
 	val redTwelve = Tile(TileNumber.Twelve, TileColor.Red)
 	val redThirteen = Tile(TileNumber.Thirteen, TileColor.Red)
+	val joker1 = JokerTile(1)
+	val joker2 = JokerTile(1)
 	
 	private val groupedTiles = listOf(blueOne, blueTwo, blueThree)
 	
@@ -412,7 +414,7 @@ class GameTest {
 	fun `makeMove should succeed when initial meld is above 30 points with joker`() {
 		val player1 = Player(
 			"Tillmann", mutableListOf(
-				redTwo, JokerTile, redFour, JokerTile, blueFive, blueSix, blueSeven
+				redTwo, joker1, redFour, joker2, blueFive, blueSix, blueSeven
 			)
 		)
 		val player2 = Player("Mika", mutableListOf(blueOne))
@@ -421,8 +423,8 @@ class GameTest {
 		val laidTiles = player1.rack()
 		val newBoard = Board(
 			listOf(
-				Group(GroupType.DiffNumberSameColor, listOf(redTwo, JokerTile, redFour)),
-				Group(GroupType.DiffNumberSameColor, listOf(JokerTile, blueFive, blueSix, blueSeven))
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, joker1, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(joker2, blueFive, blueSix, blueSeven))
 			)
 		)
 		val gameResponse = game.makeMove(player1, laidTiles, newBoard)
@@ -437,7 +439,7 @@ class GameTest {
 				redTwo, redThree, redFour, blueFour, blueFive, blueSix, blueSeven
 			)
 		)
-		val player2 = Player("Mika", mutableListOf(blueOne, blueTwo, blueThree, JokerTile))
+		val player2 = Player("Mika", mutableListOf(blueOne, blueTwo, blueThree, joker1))
 		val game = Game.withDefinedPlayers(listOf(player1, player2))
 		
 		val laidTiles = player1.rack()
@@ -459,7 +461,7 @@ class GameTest {
 	fun `makeMove should fail when game is over`() {
 		val player1 = Player(
 			"Tillmann", mutableListOf(
-				redTwo, JokerTile, redFour, JokerTile, blueFive, blueSix, blueSeven
+				redTwo, joker1, redFour, joker2, blueFive, blueSix, blueSeven
 			)
 		)
 		val player2 = Player("Mika", mutableListOf(blueEight))
@@ -468,8 +470,8 @@ class GameTest {
 		val laidTiles = player1.rack()
 		val newBoard = Board(
 			listOf(
-				Group(GroupType.DiffNumberSameColor, listOf(redTwo, JokerTile, redFour)),
-				Group(GroupType.DiffNumberSameColor, listOf(JokerTile, blueFive, blueSix, blueSeven))
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, joker1, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(joker2, blueFive, blueSix, blueSeven))
 			)
 		)
 		
@@ -478,8 +480,8 @@ class GameTest {
 		val laidTiles2 = player2.rack()
 		val newBoard2 = Board(
 			listOf(
-				Group(GroupType.DiffNumberSameColor, listOf(redTwo, JokerTile, redFour)),
-				Group(GroupType.DiffNumberSameColor, listOf(JokerTile, blueFive, blueSix, blueSeven, blueEight))
+				Group(GroupType.DiffNumberSameColor, listOf(redTwo, joker1, redFour)),
+				Group(GroupType.DiffNumberSameColor, listOf(joker2, blueFive, blueSix, blueSeven, blueEight))
 			)
 		)
 		

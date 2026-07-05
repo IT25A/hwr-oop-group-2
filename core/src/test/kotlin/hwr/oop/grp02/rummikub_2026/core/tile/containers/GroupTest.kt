@@ -20,6 +20,8 @@ class GroupTest {
 	val redThree = Tile(TileNumber.Three, TileColor.Red)
 	val blackThree = Tile(TileNumber.Three, TileColor.Black)
 	val orangeThree = Tile(TileNumber.Three, TileColor.Orange)
+	val joker1  = JokerTile(1)
+	val joker2  = JokerTile(1)
 	
 	@Test
 	fun `group size is correct`() {
@@ -115,28 +117,28 @@ class GroupTest {
 	
 	@Test
 	fun `DiffNumberSameColor validate returns true with joker at start`() {
-		val list = listOf(JokerTile, blueTwo, blueThree)
+		val list = listOf(joker1, blueTwo, blueThree)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.validate()).isTrue()
 	}
 	
 	@Test
 	fun `DiffNumberSameColor validate returns true with joker at end`() {
-		val list = listOf(blueOne, blueTwo, JokerTile)
+		val list = listOf(blueOne, blueTwo, joker1)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.validate()).isTrue()
 	}
 	
 	@Test
 	fun `DiffNumberSameColor validate returns true with  2 jokers `() {
-		val list = listOf(JokerTile, blueTwo, JokerTile)
+		val list = listOf(joker1, blueTwo, joker2)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.validate()).isTrue()
 	}
 	
 	@Test
 	fun `DiffNumberSameColor validate returns true with joker in middle`() {
-		val list = listOf(blueOne, JokerTile, blueThree)
+		val list = listOf(blueOne, joker1, blueThree)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.validate()).isTrue()
 	}
@@ -145,21 +147,21 @@ class GroupTest {
 	fun `DiffNumberSameColor validate returns false when sequence exceeds 13`() {
 		val blueTwelve = Tile(TileNumber.Twelve, TileColor.Blue)
 		val blueThirteen = Tile(TileNumber.Thirteen, TileColor.Blue)
-		val list = listOf(blueTwelve, blueThirteen, JokerTile)
+		val list = listOf(blueTwelve, blueThirteen, joker1)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.validate()).isFalse()
 	}
 	
 	@Test
 	fun `DiffNumberSameColor validate returns false when joker implies start below 1`() {
-		val list = listOf(JokerTile, blueOne, blueTwo)
+		val list = listOf(joker1, blueOne, blueTwo)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.validate()).isFalse()
 	}
 	
 	@Test
 	fun `SameNumberDiffColor validate returns true with joker`() {
-		val list = listOf(redThree, blueThree, JokerTile)
+		val list = listOf(redThree, blueThree, joker1)
 		val group = Group(GroupType.SameNumberDiffColor, list)
 		assertThat(group.validate()).isTrue()
 	}
@@ -173,35 +175,35 @@ class GroupTest {
 	
 	@Test
 	fun `totalPointValue for DiffNumberSameColor with joker start`() {
-		val list = listOf(JokerTile, blueTwo, blueThree)
+		val list = listOf(joker1, blueTwo, blueThree)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.totalPointValue()).isEqualTo(6)
 	}
 	
 	@Test
 	fun `totalPointValue for DiffNumberSameColor with joker on middle`() {
-		val list = listOf(blueOne, JokerTile, blueThree)
+		val list = listOf(blueOne, joker1, blueThree)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.totalPointValue()).isEqualTo(6)
 	}
 	
 	@Test
 	fun `totalPointValue for DiffNumberSameColor with joker end`() {
-		val list = listOf(blueOne, blueTwo, JokerTile)
+		val list = listOf(blueOne, blueTwo, joker1)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.totalPointValue()).isEqualTo(6)
 	}
 	
 	@Test
 	fun `totalPointValue for DiffNumberSameColor only joker returns 0`() {
-		val list = listOf(JokerTile, JokerTile, JokerTile)
+		val list = listOf(joker1, joker2, joker1)
 		val group = Group(GroupType.DiffNumberSameColor, list)
 		assertThat(group.totalPointValue()).isEqualTo(0)
 	}
 	
 	@Test
 	fun `totalPointValue for SameNumberDiffColor only joker returns 0`() {
-		val list = listOf(JokerTile, JokerTile, JokerTile)
+		val list = listOf(joker1, joker2, joker1)
 		val group = Group(GroupType.SameNumberDiffColor, list)
 		assertThat(group.totalPointValue()).isEqualTo(0)
 	}
@@ -215,7 +217,7 @@ class GroupTest {
 	
 	@Test
 	fun `totalPointValue for SameNumberDiffColor with joker`() {
-		val list = listOf(redThree, JokerTile, blueThree)
+		val list = listOf(redThree, joker1, blueThree)
 		val group = Group(GroupType.SameNumberDiffColor, list)
 		assertThat(group.totalPointValue()).isEqualTo(9)
 	}
