@@ -97,7 +97,6 @@ class Game private constructor(
 		
 		val enoughPoints = newGroups.sumOf { it.totalPointValue() } >= 30
 		
-		
 		if (boardNotModified && enoughPoints) return
 		
 		throw IllegalFirstMoveException(player.name())
@@ -117,5 +116,4 @@ class Game private constructor(
 	}
 	
 	fun players(): List<Player> = players.toList()
-	
 }

@@ -57,7 +57,6 @@ data class Group(private val type: GroupType, private val tiles: List<Tile> = li
 				}
 			}
 		}
-		
 		return true;
 	}
 	
