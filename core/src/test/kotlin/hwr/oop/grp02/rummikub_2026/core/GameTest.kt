@@ -38,14 +38,14 @@ class GameTest {
 	
 	@Test
 	fun `creates game with correct number of players`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		
 		assertThat(game.players()).hasSize(2)
 	}
 	
 	@Test
 	fun `each player has 14 tiles after creation`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		
 		for (player in game.players()) {
 			assertThat(player.rack()).hasSize(14)
@@ -54,7 +54,7 @@ class GameTest {
 	
 	@Test
 	fun `drawPile has remaining tiles after dealing`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		val totalTiles = 104
 		val dealtTiles = 2 * 14
 		
@@ -63,14 +63,14 @@ class GameTest {
 	
 	@Test
 	fun `board is empty at start`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		
 		assertThat(game.board().groups()).isEmpty()
 	}
 	
 	@Test
 	fun `player names are preserved`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		
 		val names = game.players().map { it.name() }.toSet()
 		assertThat(names).isEqualTo(twoPlayerNames)
@@ -78,7 +78,7 @@ class GameTest {
 	
 	@Test
 	fun `nextPlayer advances to the second player`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		
 		val next = game.nextPlayer()
 		
@@ -87,7 +87,7 @@ class GameTest {
 	
 	@Test
 	fun `nextPlayer wraps around to the first player`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		
 		game.nextPlayer()
 		val wrapped = game.nextPlayer()
@@ -98,21 +98,21 @@ class GameTest {
 	@Test
 	fun `creating game with 1 player throws exception`() {
 		assertThatThrownBy {
-			Game.withShuffledDrawPile(setOf("Alone"))
+			Game.withShuffledDrawPile("0", setOf("Alone"))
 		}.isInstanceOf(IllegalArgumentException::class.java)
 	}
 	
 	@Test
 	fun `creating game with 5 players throws exception`() {
 		assertThatThrownBy {
-			Game.withShuffledDrawPile(setOf("A", "B", "C", "D", "E"))
+			Game.withShuffledDrawPile("0", setOf("A", "B", "C", "D", "E"))
 		}.isInstanceOf(IllegalArgumentException::class.java)
 	}
 	
 	@Test
 	fun `creating game with shuffled drawPile is actually shuffled`() {
-		val shuffledGame = Game.withShuffledDrawPile(setOf("A", "B", "C"))
-		val unShuffledGame = Game.withUnShuffledDrawPile(setOf("A", "B", "C"))
+		val shuffledGame = Game.withShuffledDrawPile("0", setOf("A", "B", "C"))
+		val unShuffledGame = Game.withUnShuffledDrawPile("0", setOf("A", "B", "C"))
 		
 		assertThat(unShuffledGame.drawPile.tiles()).hasSameSizeAs(shuffledGame.drawPile.tiles())
 		assertThat(unShuffledGame.drawPile.tiles()).isNotEqualTo(shuffledGame.drawPile.tiles())
@@ -120,7 +120,7 @@ class GameTest {
 	
 	@Test
 	fun `Exception is thrown if laidTest is Empty`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		val laid = emptyList<Tile>()
 		assertThatThrownBy {
 			game.makeMove(game.players()[0], laid, Board())
@@ -130,7 +130,7 @@ class GameTest {
 	
 	@Test
 	fun `Exception is thrown if newBoard is not validated`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames, true)
 		val testBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, listOf(blueOne, blueTwo))))
 		assertThatThrownBy {
 			game.makeMove(game.players()[0], groupedTiles, testBoard)
@@ -140,7 +140,7 @@ class GameTest {
 	
 	@Test
 	fun `Exception is thrown if newBoard contains unexpected tiles`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames, true)
 		val unexpectedTile = Tile(TileNumber.Four, TileColor.Blue)
 		val testBoard = Board(
 			listOf(
@@ -156,7 +156,7 @@ class GameTest {
 	
 	@Test
 	fun `Player can move only with correct playerIndex`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames)
 		
 		val currentPlayer = game.currentPlayer()
 		assertThat(currentPlayer).isEqualTo(game.players()[0])
@@ -169,7 +169,7 @@ class GameTest {
 	
 	@Test
 	fun `draw removes a card from the draw pile and adds that card to player`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"))
 		val oldDrawPileSize = game.drawPile.tiles().size
 		val oldPlayer = game.currentPlayer()
 		val drawResponse = game.drawTile(oldPlayer)
@@ -180,7 +180,7 @@ class GameTest {
 	
 	@Test
 	fun `player index returns new player after tile was drawn`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"))
 		val oldPlayer = game.currentPlayer()
 		val drawResponse = game.drawTile(game.currentPlayer())
 		assertThat(drawResponse.newPlayer.name()).isEqualTo(oldPlayer.name())
@@ -190,7 +190,7 @@ class GameTest {
 	
 	@Test
 	fun `drawing with wrong player throws exception`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"))
 		val wrongPlayer = game.players()[1]
 		assertThatThrownBy {
 			game.drawTile(wrongPlayer)
@@ -199,7 +199,7 @@ class GameTest {
 	
 	@Test
 	fun `Player replaces player at index 0`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"))
 		val oldPlayers = game.players()
 		val newPlayer = Player("Tillmann_Modified", mutableListOf())
 		
@@ -212,7 +212,7 @@ class GameTest {
 	
 	@Test
 	fun `replacePlayer preserves all other players`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika", "Anes"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika", "Anes"))
 		val oldPlayers = game.players()
 		val newPlayer = Player("Mika_Modified", mutableListOf())
 		
@@ -226,7 +226,7 @@ class GameTest {
 	
 	@Test
 	fun `replacePlayer returns new list instance`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"))
 		val oldPlayers = game.players()
 		val newPlayer = Player("Tillmann", mutableListOf())
 		
@@ -237,7 +237,7 @@ class GameTest {
 	
 	@Test
 	fun `emptyRack leads to winning game and checks if rack is truly emptied`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika", "Stefan"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika", "Stefan"))
 		
 		// we need player 3 to be our current player to make a move
 		game.drawTile(game.currentPlayer())
@@ -281,7 +281,7 @@ class GameTest {
 	
 	@Test
 	fun `laying tiles removes them from playerRack`() {
-		val game = Game.withUnShuffledDrawPile(twoPlayerNames, true)
+		val game = Game.withUnShuffledDrawPile("0", twoPlayerNames, true)
 		val laidTiles = listOf(redOne, redTwo, redThree)
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
 		val moveResponse = game.makeMove(game.currentPlayer(), laidTiles, newBoard)
@@ -295,7 +295,7 @@ class GameTest {
 	
 	@Test
 	fun `illegal player cannot make move`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"))
 		val illegalPlayer = Player("Gandalf")
 		val laidTiles = listOf(redOne, redTwo, redThree)
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, laidTiles)))
@@ -307,7 +307,7 @@ class GameTest {
 	
 	@Test
 	fun `player does not win if rack has tiles left`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"), true)
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"), true)
 		
 		val player0 = game.players()[0]
 		val playSet = player0.rack().take(3).sortedBy { it.number().value() }
@@ -322,7 +322,7 @@ class GameTest {
 	
 	@Test
 	fun `initial meld with manipulated board fails`() {
-		val game = Game.withUnShuffledDrawPile(setOf("Tillmann", "Mika"))
+		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"))
 		val board = Board(listOf(Group(GroupType.DiffNumberSameColor, listOf(redEleven, redTwelve, redThirteen))))
 		val laidTiles = listOf(redSeven, redEight, redNine, redTen)
 		assertThatThrownBy {

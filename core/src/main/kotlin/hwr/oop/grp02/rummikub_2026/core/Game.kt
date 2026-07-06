@@ -10,34 +10,34 @@ class Game private constructor(
 	internal val drawPile: DrawPile,
 	private var players: List<Player>,
 	private var board: Board = Board(),
-	public val gameId: String,
+	val gameId: String,
 ) {
 	private var currentPlayerIndex: Int = 0
 	private var winningPlayer: Player? = null
 	
 	companion object {
-		fun withShuffledDrawPile(playerNames: Set<String>, withInitialMeld: Boolean = false): Game {
+		fun withShuffledDrawPile(gameId: String, playerNames: Set<String>, withInitialMeld: Boolean = false): Game {
 			val drawPile = DrawPile.withAllTiles()
 			drawPile.shuffle()
-			return withPlayers(playerNames, drawPile, withInitialMeld)
+			return withPlayers(playerNames, drawPile, withInitialMeld, gameId)
 		}
 		
-		fun withUnShuffledDrawPile(playerNames: Set<String>, withInitialMeld: Boolean = false): Game {
-			return withPlayers(playerNames, DrawPile.withAllTiles(), withInitialMeld)
+		fun withUnShuffledDrawPile(gameId: String, playerNames: Set<String>, withInitialMeld: Boolean = false): Game {
+			return withPlayers(playerNames, DrawPile.withAllTiles(), withInitialMeld, gameId)
 		}
 		
-		internal fun withDefinedPlayers(players: List<Player>): Game {
-			return Game(DrawPile.withAllTiles(), players)
+		internal fun withDefinedPlayers(players: List<Player>, gameId: String = "0"): Game {
+			return Game(DrawPile.withAllTiles(), players, gameId = gameId)
 		}
 		
-		private fun withPlayers(playerNames: Set<String>, drawPile: DrawPile, withInitialMeld: Boolean = false): Game {
+		private fun withPlayers(playerNames: Set<String>, drawPile: DrawPile, withInitialMeld: Boolean = false, gameId: String): Game {
 			require(playerNames.size in 2..4) { "Rummikub requires 2 to 4 players" }
 			
 			val players = playerNames.map {
 				Player(it, List(14) { drawPile.draw() }.toMutableList(), withInitialMeld)
 			}
 			
-			return Game(drawPile, players)
+			return Game(drawPile, players, gameId = gameId)
 		}
 	}
 	

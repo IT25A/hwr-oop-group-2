@@ -2,6 +2,6 @@ package hwr.oop
 
 import okio.Path
 
-data class RummikubFileSystemPersistenceConfiguration(
+data class FileSystemPersistenceConfiguration(
 	val directory: Path,
 )

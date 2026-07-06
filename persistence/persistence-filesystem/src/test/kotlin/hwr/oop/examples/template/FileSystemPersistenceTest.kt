@@ -1,13 +1,14 @@
 package hwr.oop.examples.template
 
+import GameNotFoundException
+import hwr.oop.FileSystemPersistenceConfiguration
+import hwr.oop.grp02.rummikub_2026.core.Game
 import okio.Path.Companion.toPath
 import okio.fakefilesystem.FakeFileSystem
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import hwr.oop.grp02.rummikub_2026.core.Game
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 
 class FileSystemPersistenceTest {
 
@@ -30,7 +31,7 @@ class FileSystemPersistenceTest {
 
 	@Test
 	fun `should save and load game`() {
-		val game = Game.withShuffledDrawPile(twoPlayerNames)
+		val game = Game.withShuffledDrawPile("0", twoPlayerNames)
 		val gameId = "test-game-1"
 		persistenceLayer.saveGame(gameId, game)
 		val loaded = persistenceLayer.loadGame(gameId)

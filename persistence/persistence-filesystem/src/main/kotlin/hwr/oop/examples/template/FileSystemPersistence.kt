@@ -1,5 +1,8 @@
 package hwr.oop.examples.template
 
+import GameNotFoundException
+import GamePersistence
+import hwr.oop.grp02.rummikub_2026.core.Game
 import kotlinx.serialization.json.Json
 import okio.FileSystem
 import okio.Path
@@ -10,7 +13,7 @@ private val json = Json {
 	allowStructuredMapKeys = true
 }
 
-class RummikubFileSystemPersistence(
+class FileSystemPersistence(
 	private val directory: Path,
 	private val fileSystem: FileSystem = FileSystem.SYSTEM,
 ) : GamePersistence {
@@ -24,7 +27,7 @@ class RummikubFileSystemPersistence(
 			writeUtf8(json.encodeToString(game))
 		}
 	}
-
+	
 	override fun loadGame(gameId: String): Game {
 		val path = directory.resolve("$gameId.json")
 		val jsonString = try {
