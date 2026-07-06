@@ -1,6 +1,9 @@
 package hwr.oop.examples.template
 
 import com.zaxxer.hikari.HikariDataSource
+import hwr.oop.grp02.rummikub_2026.core.Game
+import hwr.oop.grp02.rummikub_2026.core.GameNotFoundException
+import hwr.oop.grp02.rummikub_2026.core.GamePersistence
 import liquibase.Liquibase
 import liquibase.Scope
 import liquibase.database.DatabaseFactory
@@ -8,11 +11,17 @@ import liquibase.database.jvm.JdbcConnection
 import liquibase.logging.core.NoOpLogService
 import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.ui.LoggerUIService
+import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import javax.sql.DataSource
 
-class SqlPersistence(private val dataSource: DataSource) {
-	
+class SqlPersistence(
+	private val dataSource: DataSource,
+) : GamePersistence {
+
 	constructor(jdbcUrl: String, username: String, password: String) : this(
 		HikariDataSource().apply {
 			setJdbcUrl(jdbcUrl)
@@ -20,12 +29,12 @@ class SqlPersistence(private val dataSource: DataSource) {
 			setPassword(password)
 		}
 	)
-	
+
 	init {
 		runLiquibaseMigrations()
 		Database.connect(dataSource)
 	}
-	
+
 	private fun runLiquibaseMigrations() {
 		System.setProperty("liquibase.command.update.showSummary", "OFF")
 		val scopeAttrs = mapOf(
@@ -44,6 +53,26 @@ class SqlPersistence(private val dataSource: DataSource) {
 			}
 		}
 	}
-	
-}
 
+	override fun saveGame(gameId: String, game: Game) {
+		transaction {
+			RummikubGamesTable.insert {
+				it[RummikubGamesTable.id] = gameId
+				it[RummikubGamesTable.game] = game
+			}
+			Unit
+		}
+	}
+
+	override fun loadGame(gameId: String): Game {
+		val result = transaction {
+			RummikubGamesTable
+				.select(RummikubGamesTable.game)
+				.where { RummikubGamesTable.id eq gameId }
+				.map { it[RummikubGamesTable.game] }
+				.firstOrNull()
+		}
+
+		return result ?: throw GameNotFoundException(gameId)
+	}
+}

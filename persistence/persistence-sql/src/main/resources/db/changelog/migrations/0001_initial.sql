@@ -1,9 +1,7 @@
 --liquibase formatted sql
+--changeset rummikub-team:2
 
--- --changeset system:1 dbms:postgresql
--- CREATE TABLE trains
--- (
--- 	 id       TEXT PRIMARY KEY,
--- 	 name     TEXT NOT NULL,
---   maxSpeed INT NOT NULL
--- );
+CREATE TABLE rummikub_games (
+                                id VARCHAR(255) PRIMARY KEY,
+                                game jsonb NOT NULL
+);

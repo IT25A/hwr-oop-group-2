@@ -3,11 +3,14 @@ package hwr.oop.grp02.rummikub_2026.core
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.DrawPile
 import kotlin.math.abs
+import kotlinx.serialization.Serializable
 
+@Serializable
 class Game private constructor(
 	internal val drawPile: DrawPile,
 	private var players: List<Player>,
 	private var board: Board = Board(),
+	public val gameId: String,
 ) {
 	private var currentPlayerIndex: Int = 0
 	private var winningPlayer: Player? = null

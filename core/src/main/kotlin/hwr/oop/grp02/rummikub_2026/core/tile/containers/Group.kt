@@ -2,7 +2,9 @@ package hwr.oop.grp02.rummikub_2026.core.tile.containers
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.GroupType.DiffNumberSameColor
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Group(private val type: GroupType, private val tiles: List<Tile> = listOf()) {
 	fun size() = tiles.size
 	

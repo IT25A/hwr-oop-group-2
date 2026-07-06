@@ -2,7 +2,9 @@ package hwr.oop.grp02.rummikub_2026.core
 
 import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Player(
 	private val name: String,
 	private val tiles: List<Tile> = listOf(),

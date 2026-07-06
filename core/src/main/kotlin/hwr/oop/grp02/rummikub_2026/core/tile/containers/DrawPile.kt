@@ -4,7 +4,9 @@ import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
 import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
+import kotlinx.serialization.Serializable
 
+@Serializable
 internal class DrawPile(private val list: MutableList<Tile> = mutableListOf()) {
 	
 	companion object {
