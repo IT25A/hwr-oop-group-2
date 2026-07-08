@@ -5,7 +5,6 @@ import GamePersistence
 import hwr.oop.grp02.rummikub_2026.core.Game
 import kotlinx.serialization.json.Json
 import okio.FileSystem
-import okio.Path
 
 private val json = Json {
 	prettyPrint = true
@@ -14,12 +13,13 @@ private val json = Json {
 }
 
 class FileSystemPersistence(
-	private val directory: Path,
+	configuration: FileSystemPersistenceConfiguration,
 	private val fileSystem: FileSystem = FileSystem.SYSTEM,
 ) : GamePersistence {
-
-	override fun saveGame(gameId: String, game: Game) {
-		val path = directory.resolve("$gameId.json")
+	private val directory = configuration.directory
+	
+	override fun saveGame(game: Game) {
+		val path = directory.resolve("${game.gameId}.json")
 		if (!fileSystem.exists(directory)) {
 			fileSystem.createDirectories(directory)
 		}

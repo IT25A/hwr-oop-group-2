@@ -7,7 +7,7 @@ import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class DrawPile(private val list: MutableList<Tile> = mutableListOf()) {
+internal data class DrawPile(private val list: MutableList<Tile> = mutableListOf()) {
 	
 	companion object {
 		fun withAllTiles(): DrawPile {

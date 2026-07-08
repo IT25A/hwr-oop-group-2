@@ -1,7 +1,7 @@
-package hwr.oop
+package hwr.oop.examples.template
 
 import okio.Path
 
-data class FileSystemPersistenceConfiguration(
-	val directory: Path,
+class FileSystemPersistenceConfiguration(
+	val directory: Path
 )

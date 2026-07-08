@@ -6,7 +6,7 @@ import kotlin.math.abs
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Game private constructor(
+data class Game private constructor(
 	internal val drawPile: DrawPile,
 	private var players: List<Player>,
 	private var board: Board = Board(),

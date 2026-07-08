@@ -4,7 +4,7 @@ databaseChangeLog:
       author: rummikub-group-2
       changes:
         - createTable:
-            tableName: games
+            tableName: rummikub_games
             columns:
               - column:
                   name: id

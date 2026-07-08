@@ -1,7 +1,6 @@
 package hwr.oop.examples.template
 
 import GameNotFoundException
-import hwr.oop.FileSystemPersistenceConfiguration
 import hwr.oop.grp02.rummikub_2026.core.Game
 import okio.Path.Companion.toPath
 import okio.fakefilesystem.FakeFileSystem
@@ -11,11 +10,11 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class FileSystemPersistenceTest {
-
+	
 	private val fakeFileSystem = FakeFileSystem()
 	private val tempDir = "/tmp/rummikub-test".toPath()
 	private val persistenceLayer: FileSystemPersistence
-
+	
 	init {
 		fakeFileSystem.createDirectories(tempDir)
 		persistenceLayer = FileSystemPersistence(
@@ -23,24 +22,23 @@ class FileSystemPersistenceTest {
 			fakeFileSystem
 		)
 	}
-
+	
 	@AfterEach
 	fun tearDown() {
 		fakeFileSystem.checkNoOpenFiles()
 	}
-
+	
 	@Test
 	fun `should save and load game`() {
-		val game = Game.withShuffledDrawPile("0", twoPlayerNames)
-		val gameId = "test-game-1"
-		persistenceLayer.saveGame(gameId, game)
-		val loaded = persistenceLayer.loadGame(gameId)
+		val game = Game.withShuffledDrawPile("0", setOf("John", "Doe"))
+		persistenceLayer.saveGame(game)
+		val loaded = persistenceLayer.loadGame(game.gameId)
 		assertThat(loaded).isEqualTo(game)
 	}
-
+	
 	@Test
 	fun `should throw GameNotFoundException when game does not exist`() {
 		val gameId = "non-existent"
-		assertThatThrownBy{ persistenceLayer.loadGame(gameId) }.isInstanceOf(GameNotFoundException::class.java)
+		assertThatThrownBy { persistenceLayer.loadGame(gameId) }.isInstanceOf(GameNotFoundException::class.java)
 	}
 }

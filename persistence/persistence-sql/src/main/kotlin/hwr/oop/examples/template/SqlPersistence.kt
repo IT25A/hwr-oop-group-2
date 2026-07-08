@@ -1,9 +1,9 @@
 package hwr.oop.examples.template
 
+import GameNotFoundException
+import GamePersistence
 import com.zaxxer.hikari.HikariDataSource
 import hwr.oop.grp02.rummikub_2026.core.Game
-import hwr.oop.grp02.rummikub_2026.core.GameNotFoundException
-import hwr.oop.grp02.rummikub_2026.core.GamePersistence
 import liquibase.Liquibase
 import liquibase.Scope
 import liquibase.database.DatabaseFactory
@@ -54,10 +54,10 @@ class SqlPersistence(
 		}
 	}
 
-	override fun saveGame(gameId: String, game: Game) {
+	override fun saveGame(game: Game) {
 		transaction {
 			RummikubGamesTable.insert {
-				it[RummikubGamesTable.id] = gameId
+				it[RummikubGamesTable.id] = game.gameId
 				it[RummikubGamesTable.game] = game
 			}
 			Unit

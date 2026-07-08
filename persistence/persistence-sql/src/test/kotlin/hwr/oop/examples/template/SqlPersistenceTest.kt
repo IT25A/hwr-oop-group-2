@@ -16,7 +16,7 @@ class SqlPersistenceTest {
 	
 	companion object {
 		@Container
-		val postgres = PostgreSQLContainer<Nothing>("postgres:15").apply {
+		val postgres = PostgreSQLContainer("postgres:15").apply {
 			withDatabaseName("rummikub_test")
 			withUsername("test")
 			withPassword("test")
@@ -35,9 +35,8 @@ class SqlPersistenceTest {
 	fun `should save and load game`() {
 		val sqlPersistence = createSqlPersistence()
 		val game = Game.withShuffledDrawPile("0", twoPlayerNames)
-		val gameId = "test-game-1"
-		sqlPersistence.saveGame(gameId, game)
-		val loaded = sqlPersistence.loadGame(gameId)
+		sqlPersistence.saveGame(game)
+		val loaded = sqlPersistence.loadGame(game.gameId)
 		assertThat(loaded).isEqualTo(game)
 	}
 	
@@ -48,15 +47,4 @@ class SqlPersistenceTest {
 		assertThatThrownBy { sqlPersistence.loadGame(gameId) }.isInstanceOf(GameNotFoundException::class.java)
 	}
 	
-	@Test
-	fun `should update existing game`() {
-		val sqlPersistence = createSqlPersistence()
-		val gameId = "test-game-2"
-		val initialGame = Game.withUnShuffledDrawPile("0", twoPlayerNames)
-		val updatedGame = Game.withShuffledDrawPile("0", twoPlayerNames)
-		sqlPersistence.saveGame(gameId, initialGame)
-		sqlPersistence.saveGame(gameId, updatedGame)
-		val loaded = sqlPersistence.loadGame(gameId)
-		assertThat(loaded).isEqualTo(updatedGame)
-	}
 }
