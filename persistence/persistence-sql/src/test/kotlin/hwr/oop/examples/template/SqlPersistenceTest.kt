@@ -16,7 +16,7 @@ class SqlPersistenceTest {
 	
 	companion object {
 		@Container
-		val postgres = PostgreSQLContainer("postgres:15").apply {
+		val postgres = PostgreSQLContainer("postgres:17-alpine").apply {
 			withDatabaseName("rummikub_test")
 			withUsername("test")
 			withPassword("test")
