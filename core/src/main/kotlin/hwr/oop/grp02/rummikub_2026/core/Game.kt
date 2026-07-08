@@ -2,8 +2,8 @@ package hwr.oop.grp02.rummikub_2026.core
 
 import hwr.oop.grp02.rummikub_2026.core.tile.Tile
 import hwr.oop.grp02.rummikub_2026.core.tile.containers.DrawPile
-import kotlin.math.abs
 import kotlinx.serialization.Serializable
+import kotlin.math.abs
 
 @Serializable
 data class Game private constructor(
@@ -30,7 +30,12 @@ data class Game private constructor(
 			return Game(DrawPile.withAllTiles(), players, gameId = gameId)
 		}
 		
-		private fun withPlayers(playerNames: Set<String>, drawPile: DrawPile, withInitialMeld: Boolean = false, gameId: String): Game {
+		private fun withPlayers(
+			playerNames: Set<String>,
+			drawPile: DrawPile,
+			withInitialMeld: Boolean = false,
+			gameId: String,
+		): Game {
 			require(playerNames.size in 2..4) { "Rummikub requires 2 to 4 players" }
 			
 			val players = playerNames.map {

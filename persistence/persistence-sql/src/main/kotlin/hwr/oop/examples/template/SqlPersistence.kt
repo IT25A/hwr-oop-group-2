@@ -21,7 +21,7 @@ import javax.sql.DataSource
 class SqlPersistence(
 	private val dataSource: DataSource,
 ) : GamePersistence {
-
+	
 	constructor(jdbcUrl: String, username: String, password: String) : this(
 		HikariDataSource().apply {
 			setJdbcUrl(jdbcUrl)
@@ -29,12 +29,12 @@ class SqlPersistence(
 			setPassword(password)
 		}
 	)
-
+	
 	init {
 		runLiquibaseMigrations()
 		Database.connect(dataSource)
 	}
-
+	
 	private fun runLiquibaseMigrations() {
 		System.setProperty("liquibase.command.update.showSummary", "OFF")
 		val scopeAttrs = mapOf(
@@ -53,7 +53,7 @@ class SqlPersistence(
 			}
 		}
 	}
-
+	
 	override fun saveGame(game: Game) {
 		transaction {
 			RummikubGamesTable.insert {
@@ -63,7 +63,7 @@ class SqlPersistence(
 			Unit
 		}
 	}
-
+	
 	override fun loadGame(gameId: String): Game {
 		val result = transaction {
 			RummikubGamesTable
@@ -72,7 +72,7 @@ class SqlPersistence(
 				.map { it[RummikubGamesTable.game] }
 				.firstOrNull()
 		}
-
+		
 		return result ?: throw GameNotFoundException(gameId)
 	}
 }
