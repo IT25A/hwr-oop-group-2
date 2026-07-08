@@ -1,18 +1,3 @@
 databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: rummikub-group-2
-      changes:
-        - createTable:
-            tableName: rummikub_games
-            columns:
-              - column:
-                  name: id
-                  type: VARCHAR(255)
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: game
-                  type: jsonb
-                  remarks: "Game state serialized as json"
+  - includeAll:
+      path: db/changelog/migrations/
