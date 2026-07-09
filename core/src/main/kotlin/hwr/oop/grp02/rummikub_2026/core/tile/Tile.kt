@@ -19,7 +19,7 @@ data class RegularTile(
 	override fun pointValue(): Int = value.value()
 }
 
-data class JokerTile(private val id: Int) : Tile {
+class JokerTile() : Tile {
 	override fun isJoker(): Boolean = true
 	override fun pointValue(): Int = 50
 }

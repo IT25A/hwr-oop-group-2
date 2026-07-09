@@ -41,13 +41,14 @@ class DrawPileTest {
 	@Test
 	fun `withAllTiles with distinct has 53 tiles`() {
 		val drawPile = DrawPile.withAllTiles()
-		assertThat(drawPile.tiles().distinct()).hasSize(53)
+		assertThat(drawPile.tiles().distinct()).hasSize(54)
 	}
 	
 	@Test
-	fun `withAllTiles has every regular tile twice and two jokers`() {
+	fun `withAllTiles has every regular tile twice (excluding jokers)`() {
 		val drawPile = DrawPile.withAllTiles()
-		val map = drawPile.tiles().groupBy { it }
+		val regularTiles = drawPile.tiles().filter { !it.isJoker() }
+		val map = regularTiles.groupBy { it }
 		assertThat(map.all { it.value.size == 2 }).isTrue
 	}
 }

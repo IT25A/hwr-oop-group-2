@@ -20,8 +20,8 @@ class GroupTest {
 	val redThree = Tile(TileNumber.Three, TileColor.Red)
 	val blackThree = Tile(TileNumber.Three, TileColor.Black)
 	val orangeThree = Tile(TileNumber.Three, TileColor.Orange)
-	val joker1  = JokerTile(1)
-	val joker2  = JokerTile(1)
+	val joker1 = JokerTile()
+	val joker2 = JokerTile()
 	
 	@Test
 	fun `group size is correct`() {

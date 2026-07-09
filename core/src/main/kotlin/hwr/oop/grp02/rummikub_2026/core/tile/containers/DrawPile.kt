@@ -9,7 +9,7 @@ internal class DrawPile(private val list: MutableList<Tile> = mutableListOf()) {
 			val allTiles = TileColor.entries.flatMap { color ->
 				TileNumber.entries.map { value -> Tile(value, color) }
 			}
-			return DrawPile((allTiles + allTiles + listOf(JokerTile(1), JokerTile(1))).toMutableList())
+			return DrawPile((allTiles + allTiles + listOf(JokerTile(), JokerTile())).toMutableList())
 		}
 	}
 	
