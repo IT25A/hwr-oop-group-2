@@ -36,6 +36,6 @@ data class Player(
 	}
 	
 	fun sum(): Int {
-		return -tiles.sumOf { it.number().value() }
+		return -tiles.sumOf { it.pointValue() }
 	}
 }

@@ -76,4 +76,28 @@ class TilesTest {
 		assertThat(tile1).isNotEqualTo(tile3)
 	}
 	
+	@Test
+	fun `regular tile isJoker returns false`() {
+		val tile = Tile(TileNumber.Five, TileColor.Red)
+		assertThat(tile.isJoker()).isFalse()
+	}
+	
+	@Test
+	fun `joker tile isJoker returns true`() {
+		val joker1 = JokerTile()
+		assertThat(joker1.isJoker()).isTrue()
+	}
+	
+	@Test
+	fun `joker tile pointValue returns 50`() {
+		val joker1 = JokerTile()
+		assertThat(joker1.pointValue()).isEqualTo(50)
+	}
+	
+	@Test
+	fun `regular tile pointValue returns number value`() {
+		val tile = Tile(TileNumber.Seven, TileColor.Blue)
+		assertThat(tile.pointValue()).isEqualTo(7)
+	}
+	
 }

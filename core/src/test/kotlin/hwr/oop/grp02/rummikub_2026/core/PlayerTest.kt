@@ -1,9 +1,6 @@
 package hwr.oop.grp02.rummikub_2026.core
 
-import hwr.oop.grp02.rummikub_2026.core.tile.NoSuchTileException
-import hwr.oop.grp02.rummikub_2026.core.tile.Tile
-import hwr.oop.grp02.rummikub_2026.core.tile.TileColor
-import hwr.oop.grp02.rummikub_2026.core.tile.TileNumber
+import hwr.oop.grp02.rummikub_2026.core.tile.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
@@ -14,6 +11,8 @@ class PlayerTest {
 	val tile2 = Tile(TileNumber.Five, TileColor.Red)
 	val tile3 = Tile(TileNumber.Four, TileColor.Orange)
 	val tile4 = Tile(TileNumber.Six, TileColor.Red)
+	val joker1 = JokerTile()
+	val joker2 = JokerTile()
 	
 	@Test
 	fun `player starts with empty tiles`() {
@@ -68,8 +67,20 @@ class PlayerTest {
 	}
 	
 	@Test
-	fun `sum returns correct value`() {
+	fun `sum returns correct value without joker`() {
 		val player = Player(name = "Alice", listOf(tile1, tile2, tile4))
 		assertThat(player.sum()).isEqualTo(-12)
+	}
+	
+	@Test
+	fun `sum returns correct value with one joker`() {
+		val player = Player(name = "Alice", listOf(tile1, joker1, tile4))
+		assertThat(player.sum()).isEqualTo(-57)
+	}
+	
+	@Test
+	fun `sum returns correct value with two joker`() {
+		val player = Player(name = "Alice", listOf(tile1, joker1, joker2, tile4))
+		assertThat(player.sum()).isEqualTo(-107)
 	}
 }
