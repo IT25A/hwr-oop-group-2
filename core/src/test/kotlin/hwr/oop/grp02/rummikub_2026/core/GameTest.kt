@@ -314,7 +314,7 @@ class GameTest {
 		val game = Game.withUnShuffledDrawPile("0", setOf("Tillmann", "Mika"), true)
 		
 		val player0 = game.players()[0]
-		val playSet = player0.rack().take(3).sortedBy { it.number().value() }
+		val playSet = player0.rack().take(3).sortedBy { it.pointValue() }
 		
 		val newBoard = Board(listOf(Group(GroupType.DiffNumberSameColor, playSet)))
 		
