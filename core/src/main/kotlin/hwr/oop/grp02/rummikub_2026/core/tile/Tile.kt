@@ -2,6 +2,7 @@ package hwr.oop.grp02.rummikub_2026.core.tile
 
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface Tile {
 	fun isJoker(): Boolean
 	fun pointValue(): Int
@@ -22,7 +23,8 @@ data class RegularTile(
 	override fun pointValue(): Int = value.value()
 }
 
-class JokerTile : Tile {
+@Serializable
+data object JokerTile : Tile {
 	override fun isJoker(): Boolean = true
 	override fun pointValue(): Int = 50
 }

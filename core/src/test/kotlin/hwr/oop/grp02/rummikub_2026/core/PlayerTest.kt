@@ -11,8 +11,8 @@ class PlayerTest {
 	val tile2 = Tile(TileNumber.Five, TileColor.Red)
 	val tile3 = Tile(TileNumber.Four, TileColor.Orange)
 	val tile4 = Tile(TileNumber.Six, TileColor.Red)
-	val joker1 = JokerTile()
-	val joker2 = JokerTile()
+	val joker1 = JokerTile
+	val joker2 = JokerTile
 	
 	@Test
 	fun `player starts with empty tiles`() {

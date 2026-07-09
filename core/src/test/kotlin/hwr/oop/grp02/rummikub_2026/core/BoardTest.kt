@@ -14,7 +14,7 @@ class BoardTest {
 	
 	val redOne = Tile(TileNumber.One, TileColor.Red)
 	val orangeOne = Tile(TileNumber.One, TileColor.Orange)
-	val joker1 = JokerTile()
+	val joker1 = JokerTile
 	
 	@Test
 	fun `groups does return list`() {

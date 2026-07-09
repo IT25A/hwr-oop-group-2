@@ -35,8 +35,8 @@ class GameTest {
 	val redEleven = Tile(TileNumber.Eleven, TileColor.Red)
 	val redTwelve = Tile(TileNumber.Twelve, TileColor.Red)
 	val redThirteen = Tile(TileNumber.Thirteen, TileColor.Red)
-	val joker1 = JokerTile()
-	val joker2 = JokerTile()
+	val joker1 = JokerTile
+	val joker2 = JokerTile
 	
 	private val groupedTiles = listOf(blueOne, blueTwo, blueThree)
 	
@@ -490,4 +490,3 @@ class GameTest {
 			.hasMessageContaining("Game has finished (one player has won)")
 	}
 }
-
